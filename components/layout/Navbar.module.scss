@@ -21,8 +21,10 @@
     transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
+  // El mismo subrayado del hover marca la sección en la que estás
   &:hover::after,
-  &:focus-visible::after {
+  &:focus-visible::after,
+  &.activo::after {
     transform: scaleX(1);
   }
 

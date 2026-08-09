@@ -8,17 +8,60 @@ import { navLinks, site } from "@/lib/site-config";
 
 import styles from "./Navbar.module.scss";
 
+/**
+ * Altura del navbar fijo: la línea bajo la que se decide qué sección se está
+ * viendo. Coincide con el scroll-padding-top de globals.css, así que al llegar
+ * por un anchor la sección queda activa exactamente al terminar el salto.
+ */
+const LINEA_ACTIVA = 88;
+
 export default function Navbar() {
   const [abierto, setAbierto] = useState(false);
   const [conFondo, setConFondo] = useState(false);
+  const [activa, setActiva] = useState<string | null>(null);
   const sinMovimiento = useReducedMotion();
 
-  // El navbar es transparente sobre el hero y gana fondo al bajar
+  // El navbar es transparente sobre el hero y gana fondo al bajar; de paso
+  // resuelve qué sección se está viendo, para no medir el layout dos veces.
   useEffect(() => {
-    const alHacerScroll = () => setConFondo(window.scrollY > 40);
-    alHacerScroll();
+    let pendiente = false;
+
+    const medir = () => {
+      pendiente = false;
+      setConFondo(window.scrollY > 40);
+
+      // La sección activa es la última que ya cruzó la línea. Se compara por
+      // posición y no por orden en navLinks, para no atarlo al orden del array.
+      let masCercana: string | null = null;
+      let mejorTop = -Infinity;
+      for (const link of navLinks) {
+        const seccion = document.querySelector(link.href);
+        if (!seccion) continue;
+        const { top } = seccion.getBoundingClientRect();
+        if (top <= LINEA_ACTIVA && top > mejorTop) {
+          mejorTop = top;
+          masCercana = link.href;
+        }
+      }
+      // Arriba del todo (hero) no hay ninguna activa, y así queda
+      setActiva(masCercana);
+    };
+
+    // Leer el layout en cada evento de scroll provoca thrashing; una vez por
+    // frame basta y sobra para un subrayado.
+    const alHacerScroll = () => {
+      if (pendiente) return;
+      pendiente = true;
+      requestAnimationFrame(medir);
+    };
+
+    medir();
     window.addEventListener("scroll", alHacerScroll, { passive: true });
-    return () => window.removeEventListener("scroll", alHacerScroll);
+    window.addEventListener("resize", alHacerScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", alHacerScroll);
+      window.removeEventListener("resize", alHacerScroll);
+    };
   }, []);
 
   // Con el menú abierto: bloquea el scroll del body y escucha Esc
@@ -91,7 +134,13 @@ export default function Navbar() {
           <ul className="hidden items-center gap-9 md:flex">
             {navLinks.map((link) => (
               <li key={link.href}>
-                <a href={link.href} className={styles.enlace}>
+                <a
+                  href={link.href}
+                  className={`${styles.enlace} ${
+                    activa === link.href ? styles.activo : ""
+                  }`}
+                  aria-current={activa === link.href ? "true" : undefined}
+                >
                   {link.label}
                 </a>
               </li>
