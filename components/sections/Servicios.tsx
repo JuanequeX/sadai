@@ -4,13 +4,10 @@ import Reveal from "@/components/ui/Reveal";
 import styles from "./Servicios.module.scss";
 
 type Servicio = {
-  /** Frase corta sobre el título, en versalitas. */
   antetitulo: string;
   titulo: string;
   descripcion: string;
   incluye: string[];
-  /** Se precarga en el chat al tocar Reservar en esta tarjeta. */
-  mensaje: string;
 };
 
 // Agregar un servicio aquí lo agrega a la cuadrícula, sin tocar el markup
@@ -20,16 +17,14 @@ const servicios: Servicio[] = [
     titulo: "Manicura",
     descripcion:
       "Uñas listas para todos los días o para esa ocasión que ya tienes en la cabeza. Cuidamos primero la salud de tu uña, luego el diseño.",
-    incluye: ["Limado y cutícula", "Esmaltado y diseño", "Hidratación final"],
-    mensaje: "Hola Sadai, me gustaría agendar una manicura",
+    incluye: ["Limado y cutícula", "Esmaltado y diseño", "Hidratación final"]
   },
   {
     antetitulo: "Un respiro para tus pies",
     titulo: "Pedicura",
     descripcion:
       "Un rato para tus pies: limpieza profunda, exfoliación y color parejo que aguanta la semana completa.",
-    incluye: ["Exfoliación y masaje", "Trabajo de talones", "Esmaltado duradero"],
-    mensaje: "Hola Sadai, me gustaría agendar una pedicura",
+    incluye: ["Exfoliación y masaje", "Trabajo de talones", "Esmaltado duradero"]
   },
 ];
 
@@ -95,16 +90,6 @@ export default function Servicios() {
                     </li>
                   ))}
                 </ul>
-
-                <div className="mt-auto pt-10">
-                  <BotonWhatsApp
-                    variante="contorno"
-                    icono="flecha"
-                    mensaje={servicio.mensaje}
-                  >
-                    Reservar
-                  </BotonWhatsApp>
-                </div>
               </div>
             </Reveal>
           ))}
