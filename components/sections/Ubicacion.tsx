@@ -30,7 +30,6 @@ export default function Ubicacion() {
             <Reveal delay={0.14}>
               <p className="mt-5 max-w-md text-base leading-relaxed text-cacao-suave">
                 Atendemos solo con cita para que llegues, entres y sea tu turno.
-                Escríbeme antes de venir y acordamos el horario.
               </p>
             </Reveal>
 

@@ -23,7 +23,7 @@ const servicios: Servicio[] = [
     antetitulo: "Un respiro para tus pies",
     titulo: "Pedicura",
     descripcion:
-      "Un rato para tus pies: limpieza profunda, exfoliación y color parejo que aguanta la semana completa.",
+      "Un rato para tus pies: limpieza profunda, exfoliación y esmaltado.",
     incluye: ["Exfoliación y masaje", "Trabajo de talones", "Esmaltado duradero"]
   },
 ];
