@@ -14,7 +14,7 @@ const valores = [
 
 export default function SobreMi() {
   return (
-    <section id="sobre-mi" className="bg-arena px-5 py-20 md:px-10 md:py-28">
+    <section id="sobre-mi" className="bg-arena px-5 py-10 md:px-10 md:py-18">
       <div className="mx-auto grid max-w-6xl items-center gap-14 lg:grid-cols-2 lg:gap-20">
         <Reveal className={styles.collage}>
           <div className={styles.marco}>
