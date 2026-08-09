@@ -28,10 +28,12 @@ export const site = {
   fundado: 2024,
 } as const;
 
-/** Link de WhatsApp con el mensaje ya precargado. */
-export const whatsappHref = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(
-  site.mensajeWhatsApp,
-)}`;
+/** Link de WhatsApp con un mensaje a medida, p. ej. el servicio que se reserva. */
+export const crearWhatsappHref = (mensaje: string) =>
+  `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(mensaje)}`;
+
+/** Link de WhatsApp con el mensaje genérico ya precargado. */
+export const whatsappHref = crearWhatsappHref(site.mensajeWhatsApp);
 
 /** Embed de Google Maps centrado en el estudio (no requiere API key). */
 export const mapaEmbedSrc = `https://maps.google.com/maps?q=${site.coords.lat},${site.coords.lng}&z=17&output=embed`;

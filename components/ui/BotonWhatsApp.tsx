@@ -1,15 +1,18 @@
-import { MessageCircle } from "lucide-react";
+import { ArrowUpRight, MessageCircle } from "lucide-react";
 
-import { whatsappHref } from "@/lib/site-config";
+import { crearWhatsappHref, whatsappHref } from "@/lib/site-config";
 
 type Variante = "solido" | "claro" | "contorno";
+type Icono = "mensaje" | "flecha" | "ninguno";
 
 type BotonWhatsAppProps = {
   children?: string;
   variante?: Variante;
   className?: string;
-  /** Muestra el icono de mensaje junto al texto. */
-  conIcono?: boolean;
+  /** Icono que acompaña al texto: mensaje antes, flecha después. */
+  icono?: Icono;
+  /** Texto a precargar en el chat. Por defecto, el genérico de site-config. */
+  mensaje?: string;
 };
 
 const estilos: Record<Variante, string> = {
@@ -30,17 +33,23 @@ export default function BotonWhatsApp({
   children = "Agendar cita",
   variante = "solido",
   className = "",
-  conIcono = true,
+  icono = "mensaje",
+  mensaje,
 }: BotonWhatsAppProps) {
   return (
     <a
-      href={whatsappHref}
+      href={mensaje ? crearWhatsappHref(mensaje) : whatsappHref}
       target="_blank"
       rel="noopener noreferrer"
       className={`inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-sm font-medium tracking-wide uppercase transition-colors duration-300 ${estilos[variante]} ${className}`}
     >
-      {conIcono ? <MessageCircle className="size-4" aria-hidden="true" /> : null}
+      {icono === "mensaje" ? (
+        <MessageCircle className="size-4" aria-hidden="true" />
+      ) : null}
       {children}
+      {icono === "flecha" ? (
+        <ArrowUpRight className="size-4" aria-hidden="true" />
+      ) : null}
     </a>
   );
 }

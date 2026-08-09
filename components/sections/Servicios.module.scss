@@ -1,56 +1,78 @@
 @use "../../styles/tokens" as *;
 
 .tarjeta {
-  padding: 2rem 1.75rem 2.25rem;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  // Recorta las auras contra la curva de la tarjeta
+  overflow: hidden;
+  padding: 2.5rem 1.75rem 2.75rem;
   background-color: $crema;
-  // Radio asimétrico: esquina superior izquierda muy redondeada
-  border-radius: 7rem 1.5rem 1.5rem 1.5rem;
-  transition:
-    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
-    border-radius 0.45s cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow 0.45s ease;
+  border-radius: 2.5rem;
 
   @include md {
-    padding: 2.75rem 2.5rem 3rem;
-  }
-
-  &:hover {
-    transform: translateY(-6px);
-    border-radius: 1.5rem 7rem 1.5rem 1.5rem;
-    box-shadow: 0 22px 48px rgba(62, 39, 35, 0.14);
-  }
-
-  @include sin-movimiento {
-    transition: none;
-
-    &:hover {
-      transform: none;
-      border-radius: 7rem 1.5rem 1.5rem 1.5rem;
-    }
+    padding: 3.25rem 3rem 3.5rem;
+    border-radius: 3rem;
   }
 }
 
-// La segunda tarjeta espeja el radio, para que el par se vea equilibrado
+// La segunda tarjeta invierte fondo y auras, para que el par se lea como pareja
 .alterna {
-  border-radius: 1.5rem 7rem 1.5rem 1.5rem;
+  background-color: $rosa-claro;
 
-  &:hover {
-    border-radius: 7rem 1.5rem 1.5rem 1.5rem;
+  .auraAlta {
+    background-color: rgba($arena, 0.75);
   }
 
-  @include sin-movimiento {
-    &:hover {
-      border-radius: 1.5rem 7rem 1.5rem 1.5rem;
-    }
+  .auraBaja {
+    background-color: rgba($rosa, 0.9);
   }
 }
 
-.icono {
-  display: grid;
-  place-items: center;
-  width: 3.5rem;
-  height: 3.5rem;
-  color: $cacao;
+/**
+ * Manchas de color desenfocadas que asoman por las esquinas. Van antes que
+ * .contenido en el DOM y sin z-index: al ser posicionadas con z-index auto se
+ * pintan en orden de documento, así que el texto queda encima por sí solo.
+ */
+.aura {
+  position: absolute;
+  border-radius: 9999px;
+  pointer-events: none;
+  filter: blur(60px);
+}
+
+.auraAlta {
+  top: -5rem;
+  left: -4rem;
+  width: 13rem;
+  height: 26rem;
+  background-color: rgba($rosa, 0.85);
+}
+
+.auraBaja {
+  right: -3rem;
+  bottom: -6rem;
+  width: 16rem;
+  height: 16rem;
+  background-color: rgba($arena, 0.8);
+}
+
+// Ocupa el alto libre para que el botón caiga al fondo en ambas tarjetas
+.contenido {
+  position: relative;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.punto {
+  width: 0.375rem;
+  height: 0.375rem;
+  flex-shrink: 0;
+  border-radius: 9999px;
   background-color: $rosa;
-  border-radius: 50% 50% 50% 0.5rem;
+}
+
+.alterna .punto {
+  background-color: $cacao-suave;
 }

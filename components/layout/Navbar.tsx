@@ -99,7 +99,7 @@ export default function Navbar() {
           </ul>
 
           <div className="hidden md:block">
-            <BotonWhatsApp className="px-6 py-2.5 text-xs" conIcono={false} />
+            <BotonWhatsApp className="px-6 py-2.5 text-xs" icono="ninguno" />
           </div>
 
           <button
