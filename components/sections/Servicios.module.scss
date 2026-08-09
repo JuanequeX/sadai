@@ -8,11 +8,13 @@
   overflow: hidden;
   padding: 2.5rem 1.75rem 2.75rem;
   background-color: $crema;
-  border-radius: 2.5rem;
+  // Diagonal: superior izquierda e inferior derecha muy redondeadas, las otras
+  // dos apenas curvadas. Las dos tarjetas llevan el mismo giro, no espejado.
+  border-radius: 2.75rem 1rem;
 
   @include md {
     padding: 3.25rem 3rem 3.5rem;
-    border-radius: 3rem;
+    border-radius: 3.25rem 1.125rem;
   }
 }
 
