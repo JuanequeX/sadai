@@ -13,8 +13,12 @@
 }
 
 .pista {
+  // Sobrescrito por el componente en cuanto mide cuántas copias hacen falta.
+  --desplazamiento: -50%;
+
   display: flex;
   width: max-content;
+  will-change: transform;
   animation-name: desplazar;
   animation-timing-function: linear;
   animation-iteration-count: infinite;
@@ -58,11 +62,13 @@
   }
 }
 
+// El desplazamiento es el ancho exacto de una copia, así que al cerrar el ciclo
+// la pista queda igual que al empezar y el salto no se ve.
 @keyframes desplazar {
   from {
     transform: translateX(0);
   }
   to {
-    transform: translateX(-50%);
+    transform: translateX(var(--desplazamiento));
   }
 }
