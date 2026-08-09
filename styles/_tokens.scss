@@ -1,0 +1,32 @@
+// Espejo de la paleta declarada en styles/globals.css (@theme).
+// Si cambia un hex aquí, cámbialo también allá.
+$rosa: #f4c9d6;
+$cacao: #3e2723;
+$arena: #dccfc0;
+$crema: #f7e4d7;
+
+$rosa-claro: #fbe6ed;
+$cacao-suave: #5b423c;
+
+// Breakpoints alineados con los de Tailwind
+$bp-md: 48rem; // 768px
+$bp-lg: 64rem; // 1024px
+
+@mixin md {
+  @media (min-width: $bp-md) {
+    @content;
+  }
+}
+
+@mixin lg {
+  @media (min-width: $bp-lg) {
+    @content;
+  }
+}
+
+// Respeta la preferencia del sistema en cualquier animación decorativa
+@mixin sin-movimiento {
+  @media (prefers-reduced-motion: reduce) {
+    @content;
+  }
+}

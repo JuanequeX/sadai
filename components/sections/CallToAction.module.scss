@@ -1,0 +1,35 @@
+@use "../../styles/tokens" as *;
+
+.cta {
+  position: relative;
+  background-color: $cacao;
+  // Arco superior: radio horizontal del 50% del ancho, vertical fijo
+  border-top-left-radius: 50% 4rem;
+  border-top-right-radius: 50% 4rem;
+  padding-top: 1rem;
+
+  @include md {
+    border-top-left-radius: 50% 7rem;
+    border-top-right-radius: 50% 7rem;
+    padding-top: 2rem;
+  }
+}
+
+.tituloCurvo {
+  display: block;
+  width: 100%;
+  height: auto;
+
+  text {
+    fill: $rosa;
+    font-family: var(--font-titulo);
+    font-size: 62px;
+    letter-spacing: 0.06em;
+  }
+
+  @include md {
+    text {
+      font-size: 58px;
+    }
+  }
+}

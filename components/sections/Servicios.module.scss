@@ -1,0 +1,56 @@
+@use "../../styles/tokens" as *;
+
+.tarjeta {
+  padding: 2rem 1.75rem 2.25rem;
+  background-color: $crema;
+  // Radio asimétrico: esquina superior izquierda muy redondeada
+  border-radius: 7rem 1.5rem 1.5rem 1.5rem;
+  transition:
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    border-radius 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.45s ease;
+
+  @include md {
+    padding: 2.75rem 2.5rem 3rem;
+  }
+
+  &:hover {
+    transform: translateY(-6px);
+    border-radius: 1.5rem 7rem 1.5rem 1.5rem;
+    box-shadow: 0 22px 48px rgba(62, 39, 35, 0.14);
+  }
+
+  @include sin-movimiento {
+    transition: none;
+
+    &:hover {
+      transform: none;
+      border-radius: 7rem 1.5rem 1.5rem 1.5rem;
+    }
+  }
+}
+
+// La segunda tarjeta espeja el radio, para que el par se vea equilibrado
+.alterna {
+  border-radius: 1.5rem 7rem 1.5rem 1.5rem;
+
+  &:hover {
+    border-radius: 7rem 1.5rem 1.5rem 1.5rem;
+  }
+
+  @include sin-movimiento {
+    &:hover {
+      border-radius: 1.5rem 7rem 1.5rem 1.5rem;
+    }
+  }
+}
+
+.icono {
+  display: grid;
+  place-items: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  color: $cacao;
+  background-color: $rosa;
+  border-radius: 50% 50% 50% 0.5rem;
+}

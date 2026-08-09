@@ -1,0 +1,59 @@
+@use "../../styles/tokens" as *;
+
+.collage {
+  position: relative;
+  // Deja aire a la derecha y abajo para la tarjeta flotante
+  padding-right: 2.5rem;
+  padding-bottom: 2.5rem;
+
+  @include lg {
+    padding-right: 3.5rem;
+  }
+}
+
+.marco {
+  position: relative;
+  z-index: 2;
+  overflow: hidden;
+  // Forma orgánica, como las tarjetas de la referencia
+  border-radius: 14rem 14rem 1.75rem 1.75rem;
+  box-shadow: 0 24px 60px rgba(62, 39, 35, 0.18);
+}
+
+.retrato {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  object-position: center 22%;
+}
+
+.tarjetaFlotante {
+  position: absolute;
+  z-index: 3;
+  right: 0;
+  bottom: 0;
+  padding: 1.1rem 1.6rem;
+  text-align: center;
+  background-color: $crema;
+  border-radius: 1.5rem 1.5rem 1.5rem 0.35rem;
+  box-shadow: 0 14px 34px rgba(62, 39, 35, 0.14);
+
+  @include md {
+    padding: 1.4rem 2rem;
+  }
+}
+
+// Acuarela detrás del retrato
+.mancha {
+  position: absolute;
+  z-index: 1;
+  top: -1.5rem;
+  left: -1.5rem;
+  width: 65%;
+  height: 55%;
+  background-color: rgba(244, 201, 214, 0.9);
+  border-radius: 58% 42% 47% 53% / 52% 45% 55% 48%;
+  filter: blur(2px);
+}

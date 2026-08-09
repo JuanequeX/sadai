@@ -1,26 +1,59 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/*
+ * Paleta de marca — jerarquía definida por el estudio.
+ * Los mismos hex viven en styles/_tokens.scss para los SCSS modules.
+ */
+@theme {
+  --color-rosa: #f4c9d6;
+  --color-cacao: #3e2723;
+  --color-arena: #dccfc0;
+  --color-crema: #f7e4d7;
+
+  /* Variantes derivadas, para hovers y capas suaves */
+  --color-rosa-claro: #fbe6ed;
+  --color-cacao-suave: #5b423c;
+
+  --font-titulo: var(--fuente-titulo), Georgia, serif;
+  --font-cuerpo: var(--fuente-cuerpo), system-ui, sans-serif;
+  --font-firma: var(--fuente-firma), cursive;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* Compensa el navbar fijo al saltar a un anchor */
+    scroll-padding-top: 5.5rem;
   }
-}
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  body {
+    background-color: var(--color-crema);
+    color: var(--color-cacao);
+    font-family: var(--font-cuerpo);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-titulo);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+
+  ::selection {
+    background-color: var(--color-rosa);
+    color: var(--color-cacao);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-cacao);
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
 }

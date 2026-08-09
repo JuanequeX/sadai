@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <title>Nails by Sadai</title>
+  <!-- Fondo rosa de marca, a sangre para que se lea en pestañas pequeñas -->
+  <rect width="100" height="100" rx="24" ry="24" fill="#F4C9D6" />
+  <!--
+    La "S" va como trazo y no como texto: un <text> dependería de que la
+    fuente cursiva exista en el sistema de quien visita el sitio.
+  -->
+  <path
+    d="M68 32 C62 21, 41 19, 35 30 C29 41, 44 47, 52 51 C62 56, 73 64, 66 75 C58 85, 37 83, 31 72"
+    fill="none"
+    stroke="#3E2723"
+    stroke-width="9"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+</svg>

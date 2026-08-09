@@ -1,0 +1,68 @@
+@use "../../styles/tokens" as *;
+
+.banda {
+  overflow: hidden;
+  background-color: $cacao;
+  color: $crema;
+  padding-block: 0.75rem;
+  user-select: none;
+
+  @include md {
+    padding-block: 1rem;
+  }
+}
+
+.pista {
+  display: flex;
+  width: max-content;
+  animation-name: desplazar;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+
+  @include sin-movimiento {
+    animation: none;
+  }
+}
+
+.grupo {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  li {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    font-size: 0.7rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+
+    @include md {
+      font-size: 0.8rem;
+    }
+  }
+}
+
+.punto {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  margin-inline: 1.75rem;
+  border-radius: 9999px;
+  background-color: $rosa;
+
+  @include md {
+    margin-inline: 2.5rem;
+  }
+}
+
+@keyframes desplazar {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
