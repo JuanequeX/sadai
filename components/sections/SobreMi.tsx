@@ -90,7 +90,7 @@ export default function SobreMi() {
 
           <Reveal delay={0.32}>
             <div className="mt-10">
-              <BotonWhatsApp>Reservar mi lugar</BotonWhatsApp>
+              <BotonWhatsApp>Agendar Cita</BotonWhatsApp>
             </div>
           </Reveal>
         </div>

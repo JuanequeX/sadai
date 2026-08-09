@@ -89,7 +89,7 @@ export default function Servicios() {
               ¿Buscas algo distinto? Cuéntame qué traes en mente.
             </p>
             <div className="mt-5">
-              <BotonWhatsApp>Preguntar por WhatsApp</BotonWhatsApp>
+              <BotonWhatsApp>Agendar cita</BotonWhatsApp>
             </div>
           </div>
         </Reveal>
