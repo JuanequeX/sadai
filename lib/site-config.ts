@@ -12,7 +12,7 @@ export const site = {
   whatsapp: "523141434680",
   telefonoVisible: "314 143 4680",
   // Sin emoji: WhatsApp lo corrompe al redirigir de wa.me a api.whatsapp.com
-  mensajeWhatsApp: "Hola Sadai, me gustaría agendar una cita",
+  mensajeWhatsApp: "Hola Sadai, me gustaría agendar una cita ✨",
 
   instagram: "nailsbysadai",
   instagramUrl: "https://www.instagram.com/nailsbysadai/",
@@ -23,7 +23,7 @@ export const site = {
   // TODO: confirmar calle, colonia y CP exactos con Sadai
   direccion: "Manzanillo, Colima",
   // TODO: confirmar horarios reales del estudio
-  horarios: "Lunes a sábado · 10:00 – 19:00",
+  horarios: "Lunes a sábado · 10:00 – 21:00",
 
   fundado: 2024,
 } as const;

@@ -1,7 +1,6 @@
 import Image from "next/image";
 import { HeartHandshake, ShieldCheck, Sparkles } from "lucide-react";
 
-import BotonWhatsApp from "@/components/ui/BotonWhatsApp";
 import Reveal from "@/components/ui/Reveal";
 import { site } from "@/lib/site-config";
 
@@ -86,12 +85,6 @@ export default function SobreMi() {
                 </li>
               ))}
             </ul>
-          </Reveal>
-
-          <Reveal delay={0.32}>
-            <div className="mt-10">
-              <BotonWhatsApp>Agendar Cita</BotonWhatsApp>
-            </div>
           </Reveal>
         </div>
       </div>
