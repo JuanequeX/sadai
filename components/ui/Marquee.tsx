@@ -15,6 +15,15 @@ type MarqueeProps = {
 const COPIAS_MINIMAS = 2;
 
 /**
+ * Copias del HTML estático, antes de que la hidratación permita medir.
+ *
+ * Pasarse no cuesta nada: el efecto ajusta el número al alza o a la baja en
+ * cuanto monta. Quedarse corto sí se ve, porque la primera pintura llega antes
+ * de que haya JS y el corte asomaría hasta que hidrate.
+ */
+const COPIAS_INICIALES = 6;
+
+/**
  * Cuántas copias hacen falta para que nunca se vea el final de la pista.
  *
  * La pista se desplaza como mucho el ancho de una copia, así que al cerrar el
@@ -41,7 +50,7 @@ export default function Marquee({
   const sinMovimiento = useReducedMotion();
   const bandaRef = useRef<HTMLDivElement>(null);
   const grupoRef = useRef<HTMLUListElement>(null);
-  const [copias, setCopias] = useState(COPIAS_MINIMAS);
+  const [copias, setCopias] = useState(COPIAS_INICIALES);
 
   // El ancho del grupo depende de la fuente, que puede cargar tarde, y el del
   // contenedor del viewport. ResizeObserver cubre ambos casos sin escuchar

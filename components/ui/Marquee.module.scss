@@ -13,8 +13,9 @@
 }
 
 .pista {
-  // Sobrescrito por el componente en cuanto mide cuántas copias hacen falta.
-  --desplazamiento: -50%;
+  // Respaldo por si falta el estilo en línea; el componente lo sobrescribe con
+  // -100% / copias en cuanto mide cuántas hacen falta.
+  --desplazamiento: -16.6667%;
 
   display: flex;
   width: max-content;
