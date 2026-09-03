@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { HeartHandshake, ShieldCheck, Sparkles } from "lucide-react";
 
+import Isotipo from "@/components/ui/Isotipo";
 import Reveal from "@/components/ui/Reveal";
 import { site } from "@/lib/site-config";
 
@@ -14,52 +15,50 @@ const valores = [
 
 export default function SobreMi() {
   return (
-    <section id="sobre-mi" className="bg-arena px-5 py-10 md:px-10 md:py-18">
+    <section id="sobre-mi" className="bg-crema px-5 py-16 md:px-10 md:py-24">
       <div className="mx-auto grid max-w-6xl items-center gap-14 lg:grid-cols-2 lg:gap-20">
         <Reveal className={styles.collage}>
           <div className={styles.marco}>
             <Image
-              src="/sadai-retrato.png"
-              alt="Sadai en su estudio, frente al letrero de neón de la marca"
-              width={1133}
-              height={1600}
+              src="/sadai-retrato.jpg"
+              alt="Sadai en su estudio"
+              width={776}
+              height={970}
               sizes="(min-width: 1024px) 40vw, 90vw"
               className={styles.retrato}
             />
           </div>
 
           <div className={styles.tarjetaFlotante} aria-hidden="true">
-            <span className="block font-titulo text-3xl text-cacao">
+            <span className="block font-titulo text-3xl text-vino">
               {site.fundado}
             </span>
-            <span className="mt-1 block text-[0.6rem] tracking-[0.22em] text-cacao-suave uppercase">
+            <span className="mt-1 block text-[0.6rem] tracking-[0.22em] text-vino-suave uppercase">
               Desde
             </span>
           </div>
 
-          <div className={styles.mancha} aria-hidden="true" />
+          <Isotipo className={styles.mancha} />
         </Reveal>
 
         <div>
           <Reveal>
-            <p className="text-[0.65rem] tracking-[0.3em] text-cacao-suave uppercase">
+            <p className="text-[0.65rem] tracking-[0.3em] text-vino-suave uppercase">
               Sobre mí
             </p>
           </Reveal>
 
           <Reveal delay={0.08}>
-            <h2 className="mt-5 text-3xl leading-[1.15] text-balance text-cacao sm:text-4xl md:text-5xl">
+            <h2 className="mt-5 text-3xl leading-[1.15] text-balance text-vino sm:text-4xl md:text-5xl">
               El detalle es la cultura.
               <br />
-              <span className="font-firma text-[1.35em] leading-none text-cacao">
-                Sadai
-              </span>{" "}
+              <em className="italic">Sadai</em>{" "}
               es el nombre.
             </h2>
           </Reveal>
 
           <Reveal delay={0.16}>
-            <div className="mt-7 space-y-4 text-base leading-relaxed text-cacao-suave">
+            <div className="mt-7 space-y-4 text-base leading-relaxed text-vino-suave">
               <p>
                 Abrí este espacio en {site.fundado} con una idea sencilla: que
                 arreglarte las uñas se sintiera como un descanso y no como un
@@ -78,10 +77,10 @@ export default function SobreMi() {
             <ul className="mt-9 space-y-4">
               {valores.map(({ icono: Icono, texto }) => (
                 <li key={texto} className="flex items-center gap-3.5">
-                  <span className="grid size-9 shrink-0 place-items-center rounded-full bg-crema text-cacao">
+                  <span className="grid size-9 shrink-0 place-items-center rounded-full bg-rosa text-vino">
                     <Icono className="size-4" aria-hidden="true" />
                   </span>
-                  <span className="text-sm text-cacao">{texto}</span>
+                  <span className="text-sm text-vino">{texto}</span>
                 </li>
               ))}
             </ul>

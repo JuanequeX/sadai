@@ -1,0 +1,31 @@
+@use "../../styles/tokens" as *;
+
+.curva {
+  display: block;
+  width: 100%;
+  line-height: 0;
+  // Evita la costura de 1px entre el SVG y la sección siguiente
+  margin-bottom: -1px;
+
+  svg {
+    display: block;
+    width: 100%;
+    height: 54px;
+
+    @include md {
+      height: 96px;
+    }
+  }
+}
+
+/*
+ * Espejo horizontal, nunca vertical.
+ *
+ * El relleno de la curva ocupa la mitad de abajo del viewBox, así que voltearla
+ * en vertical lo mandaría arriba y la sección de abajo dejaría de estar
+ * cubierta: en lugar de una transición se vería una franja del color contrario.
+ * Con scaleX se consigue la variedad de forma sin romper el relleno.
+ */
+.invertida {
+  transform: scaleX(-1);
+}

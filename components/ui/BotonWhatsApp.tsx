@@ -17,12 +17,12 @@ type BotonWhatsAppProps = {
 
 const estilos: Record<Variante, string> = {
   // Cacao sobre fondos claros
-  solido: "bg-cacao text-crema hover:bg-cacao-suave",
+  solido: "bg-vino text-crema hover:bg-vino-suave",
   // Rosa sobre fondos oscuros
-  claro: "bg-rosa text-cacao hover:bg-rosa-claro",
+  claro: "bg-rosa text-vino hover:bg-rosa-palido",
   // Sin relleno, para secundarios
   contorno:
-    "border border-cacao text-cacao hover:bg-cacao hover:text-crema bg-transparent",
+    "border border-vino text-vino hover:bg-vino hover:text-crema bg-transparent",
 };
 
 /**

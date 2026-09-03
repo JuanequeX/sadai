@@ -2,8 +2,10 @@
 
 .banda {
   overflow: hidden;
-  background-color: $cacao;
-  color: $crema;
+  // Periwinkle como superficie, con el texto en vino encima: al revés no
+  // alcanzaría el contraste mínimo. Ver la nota en globals.css.
+  background-color: $periwinkle;
+  color: $vino;
   padding-block: 0.75rem;
   user-select: none;
 
@@ -50,15 +52,17 @@
   }
 }
 
-.punto {
+.marca {
   display: inline-block;
-  width: 5px;
-  height: 5px;
+  // El isotipo es más alto que ancho (444x732), así que se fija el alto y el
+  // ancho lo resuelve el viewBox.
+  height: 0.8rem;
+  width: auto;
   margin-inline: 1.75rem;
-  border-radius: 9999px;
-  background-color: $rosa;
+  opacity: 0.65;
 
   @include md {
+    height: 0.95rem;
     margin-inline: 2.5rem;
   }
 }

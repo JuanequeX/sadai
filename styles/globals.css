@@ -1,22 +1,29 @@
 @import "tailwindcss";
 
 /*
- * Paleta de marca — jerarquía definida por el estudio.
- * Los mismos hex viven en styles/_tokens.scss para los SCSS modules.
+ * Paleta de la Propuesta 02 de identidad (Not Alias).
+ * Los hex se muestrearon del arte original, no se estimaron.
+ * Los mismos valores viven en styles/_tokens.scss para los SCSS modules.
  */
 @theme {
-  --color-rosa: #f4c9d6;
-  --color-cacao: #3e2723;
-  --color-arena: #dccfc0;
-  --color-crema: #f7e4d7;
+  --color-vino: #3e0619;
+  --color-rosa: #efc6da;
+  --color-crema: #f6eecf;
+  --color-azul: #abbfd8;
 
-  /* Variantes derivadas, para hovers y capas suaves */
-  --color-rosa-claro: #fbe6ed;
-  --color-cacao-suave: #5b423c;
+  /*
+   * El periwinkle es color de FORMA, nunca de texto sobre fondos claros:
+   * da 1.71:1 sobre rosa y 2.24:1 sobre crema, así que ni siquiera pasa el
+   * mínimo de texto grande. Sobre vino sí es legible (6.48:1).
+   */
+  --color-periwinkle: #9199f4;
+
+  /* Derivados: texto secundario y capas suaves */
+  --color-vino-suave: #7a2a3c;
+  --color-rosa-palido: #f7e2ec;
 
   --font-titulo: var(--fuente-titulo), Georgia, serif;
   --font-cuerpo: var(--fuente-cuerpo), system-ui, sans-serif;
-  --font-firma: var(--fuente-firma), cursive;
 }
 
 @layer base {
@@ -28,7 +35,7 @@
 
   body {
     background-color: var(--color-crema);
-    color: var(--color-cacao);
+    color: var(--color-vino);
     font-family: var(--font-cuerpo);
     -webkit-font-smoothing: antialiased;
   }
@@ -37,17 +44,17 @@
   h2,
   h3 {
     font-family: var(--font-titulo);
-    font-weight: 500;
-    letter-spacing: -0.01em;
+    font-weight: 400;
+    letter-spacing: -0.015em;
   }
 
   ::selection {
-    background-color: var(--color-rosa);
-    color: var(--color-cacao);
+    background-color: var(--color-periwinkle);
+    color: var(--color-vino);
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-cacao);
+    outline: 2px solid var(--color-vino);
     outline-offset: 3px;
   }
 

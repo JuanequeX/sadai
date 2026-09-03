@@ -4,6 +4,7 @@ import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 
 import BotonWhatsApp from "@/components/ui/BotonWhatsApp";
+import Isotipo from "@/components/ui/Isotipo";
 import { navLinks, site } from "@/lib/site-config";
 
 import styles from "./Navbar.module.scss";
@@ -97,11 +98,19 @@ export default function Navbar() {
   return (
     <>
       <header
-        className={`fixed inset-x-0 top-0 z-50 transition-colors duration-500 ${
-          // Con el menú abierto se deja transparente para fundirse con el overlay rosa
+        // El estado con fondo también es vino, no claro: así el logotipo rosa y
+        // los enlaces sirven igual sobre el hero que al bajar, sin duplicar
+        // assets ni recolorear nada a mitad del scroll.
+        className={`fixed inset-x-0 top-0 z-50 text-rosa transition-colors duration-500 ${
+          // Con el menú abierto se deja transparente para fundirse con el overlay
           conFondo && !abierto
-            ? "bg-crema/95 shadow-[0_1px_20px_rgba(62,39,35,0.08)] backdrop-blur"
-            : "bg-transparent"
+            ? "bg-vino/95 shadow-[0_1px_20px_rgba(62,6,25,0.35)] backdrop-blur"
+            : // No es `bg-transparent`: el fondo opaco depende de `conFondo`, que
+              // sólo se activa con JS. Sin él el navbar se quedaría transparente
+              // para siempre y estos enlaces rosa caerían a 1.31:1 sobre las
+              // secciones claras. Este velo es invisible sobre el hero —mismo
+              // vino— y salva la lectura en cualquier otro sitio.
+              styles.velo
         }`}
       >
         <nav
@@ -113,22 +122,16 @@ export default function Navbar() {
             className="flex items-center gap-2.5"
             aria-label={`${site.nombre} — inicio`}
           >
+            {/* El logotipo dibujado sustituye al par de líneas de texto: el
+                tagline ya viene resuelto en el lockup del pie. */}
             <Image
-              src="/logo-sadai.png"
+              src="/logotipo-sadai-rosa.png"
               alt=""
-              width={44}
-              height={44}
+              width={1657}
+              height={787}
               priority
-              className="size-10 rounded-full object-cover md:size-11"
+              className="h-7 w-auto md:h-9"
             />
-            <span className="leading-none">
-              <span className="block font-firma text-xl text-cacao md:text-2xl">
-                Sadai
-              </span>
-              <span className="block text-[0.55rem] tracking-[0.28em] text-cacao-suave uppercase">
-                Artistic Nails
-              </span>
-            </span>
           </Link>
 
           <ul className="hidden items-center gap-9 md:flex">
@@ -148,7 +151,11 @@ export default function Navbar() {
           </ul>
 
           <div className="hidden md:block">
-            <BotonWhatsApp className="px-6 py-2.5 text-xs" icono="ninguno" />
+            <BotonWhatsApp
+              variante="claro"
+              className="px-6 py-2.5 text-xs"
+              icono="ninguno"
+            />
           </div>
 
           <button
@@ -170,13 +177,18 @@ export default function Navbar() {
         {abierto ? (
           <motion.div
             id="menu-movil"
-            className="fixed inset-0 z-40 flex flex-col justify-center bg-rosa px-8 pt-20 md:hidden"
+            // Vino y no rosa: la hamburguesa y el logotipo del header flotan por
+            // encima de este overlay, y ambos son rosa. Sobre fondo rosa
+            // desaparecerían.
+            className="fixed inset-0 z-40 flex flex-col justify-center overflow-hidden bg-vino px-8 pt-20 md:hidden"
             initial={{ x: sinMovimiento ? 0 : "100%", opacity: sinMovimiento ? 0 : 1 }}
             animate={{ x: 0, opacity: 1 }}
             exit={{ x: sinMovimiento ? 0 : "100%", opacity: sinMovimiento ? 0 : 1 }}
             transition={{ duration: sinMovimiento ? 0.2 : 0.45, ease: [0.22, 1, 0.36, 1] }}
           >
-            <ul className="flex flex-col gap-7">
+            <Isotipo className={styles.marcaMenu} />
+
+            <ul className="relative flex flex-col gap-7">
               {navLinks.map((link, i) => (
                 <motion.li
                   key={link.href}
@@ -190,7 +202,7 @@ export default function Navbar() {
                   <a
                     href={link.href}
                     onClick={() => setAbierto(false)}
-                    className="font-titulo text-4xl text-cacao"
+                    className="font-titulo text-4xl text-rosa"
                   >
                     {link.label}
                   </a>
@@ -199,13 +211,13 @@ export default function Navbar() {
             </ul>
 
             <motion.div
-              className="mt-12"
+              className="relative mt-12"
               initial={{ opacity: 0, y: sinMovimiento ? 0 : 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: sinMovimiento ? 0 : 0.42, duration: 0.4 }}
             >
-              <BotonWhatsApp />
-              <p className="mt-8 text-xs tracking-[0.2em] text-cacao-suave uppercase">
+              <BotonWhatsApp variante="claro" />
+              <p className="mt-8 text-xs tracking-[0.2em] text-rosa/70 uppercase">
                 {site.telefonoVisible}
               </p>
             </motion.div>
