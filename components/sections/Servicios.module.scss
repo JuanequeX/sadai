@@ -4,59 +4,48 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  // Recorta las auras contra la curva de la tarjeta
+  // Recorta la marca contra la curva de la tarjeta
   overflow: hidden;
   padding: 2.5rem 1.75rem 2.75rem;
   background-color: $crema;
   // Diagonal: superior izquierda e inferior derecha muy redondeadas, las otras
   // dos apenas curvadas. Las dos tarjetas llevan el mismo giro, no espejado.
-  border-radius: 2.75rem 1rem;
+  // El radio es más pronunciado que en la identidad anterior, para acercarse a
+  // la píldora asimétrica de la propuesta.
+  border-radius: 4.5rem 1.25rem;
 
   @include md {
     padding: 3.25rem 3rem 3.5rem;
-    border-radius: 3.25rem 1.125rem;
+    border-radius: 5.5rem 1.5rem;
   }
 }
 
-// La segunda tarjeta invierte fondo y auras, para que el par se lea como pareja
+// La segunda tarjeta cambia de tono para que el par se lea como pareja.
+// El azul es el único sitio donde aparece en el sitio, y con texto vino da
+// 8.98:1, así que sostiene la lectura sin problema.
 .alterna {
-  background-color: $rosa-claro;
+  background-color: $azul;
 
-  .auraAlta {
-    background-color: rgba($arena, 0.75);
-  }
-
-  .auraBaja {
-    background-color: rgba($rosa, 0.9);
+  .marcaTarjeta {
+    color: $vino;
+    opacity: 0.12;
   }
 }
 
 /**
- * Manchas de color desenfocadas que asoman por las esquinas. Van antes que
- * .contenido en el DOM y sin z-index: al ser posicionadas con z-index auto se
- * pintan en orden de documento, así que el texto queda encima por sí solo.
+ * El isotipo asomando por la esquina. Va antes que .contenido en el DOM y sin
+ * z-index: al ser posicionado con z-index auto se pinta en orden de documento,
+ * así que el texto queda encima por sí solo.
  */
-.aura {
+.marcaTarjeta {
   position: absolute;
-  border-radius: 9999px;
+  top: -3rem;
+  right: -4rem;
+  height: 20rem;
+  width: auto;
+  color: $periwinkle;
+  opacity: 0.38;
   pointer-events: none;
-  filter: blur(60px);
-}
-
-.auraAlta {
-  top: -5rem;
-  left: -4rem;
-  width: 13rem;
-  height: 26rem;
-  background-color: rgba($rosa, 0.85);
-}
-
-.auraBaja {
-  right: -3rem;
-  bottom: -6rem;
-  width: 16rem;
-  height: 16rem;
-  background-color: rgba($arena, 0.8);
 }
 
 // Ocupa el alto libre para que el botón caiga al fondo en ambas tarjetas
@@ -67,10 +56,11 @@
   flex-direction: column;
 }
 
-.punto {
-  width: 0.375rem;
-  height: 0.375rem;
+// La viñeta de cada punto es el isotipo en miniatura, como los sellos de la
+// tarjeta de cliente frecuente de la propuesta.
+.vinneta {
+  height: 0.7rem;
+  width: auto;
   flex-shrink: 0;
-  border-radius: 9999px;
-  background-color: $cacao-suave;
+  color: $vino-suave;
 }

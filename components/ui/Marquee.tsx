@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { useReducedMotion } from "motion/react";
 
+import Isotipo from "@/components/ui/Isotipo";
+
 import styles from "./Marquee.module.scss";
 
 type MarqueeProps = {
@@ -102,7 +104,8 @@ export default function Marquee({
             {items.map((texto, i) => (
               <li key={`${texto}-${i}`}>
                 <span>{texto}</span>
-                <span className={styles.punto} />
+                {/* El isotipo separa las frases, como los sellos de la tarjeta de cliente */}
+                <Isotipo className={styles.marca} />
               </li>
             ))}
           </ul>

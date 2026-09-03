@@ -1,16 +1,22 @@
 // Espejo de la paleta declarada en styles/globals.css (@theme).
 // Si cambia un hex aquí, cámbialo también allá.
-$rosa: #f4c9d6;
-$cacao: #3e2723;
-$arena: #dccfc0;
-$crema: #f7e4d7;
+$vino: #3e0619;
+$rosa: #efc6da;
+// Arena de la Propuesta 01, en lugar del crema amarillento de la 02
+$crema: #eedabc;
+$azul: #abbfd8;
 
-$rosa-claro: #fbe6ed;
-$cacao-suave: #5b423c;
+// Color de forma, no de texto: sobre fondos claros no alcanza el contraste
+// mínimo. Ver la nota en globals.css.
+$periwinkle: #9199f4;
+
+$vino-suave: #7a2a3c;
+$rosa-palido: #f7e2ec;
 
 // Breakpoints alineados con los de Tailwind
 $bp-md: 48rem; // 768px
 $bp-lg: 64rem; // 1024px
+$bp-xl: 80rem; // 1280px — coincide con el ancho máximo de .contenedor
 
 @mixin md {
   @media (min-width: $bp-md) {
@@ -20,6 +26,12 @@ $bp-lg: 64rem; // 1024px
 
 @mixin lg {
   @media (min-width: $bp-lg) {
+    @content;
+  }
+}
+
+@mixin xl {
+  @media (min-width: $bp-xl) {
     @content;
   }
 }

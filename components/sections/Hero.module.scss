@@ -3,42 +3,135 @@
 .hero {
   position: relative;
   overflow: hidden;
-  background: linear-gradient(
-    170deg,
-    $rosa 0%,
-    $rosa-claro 38%,
-    $crema 78%,
-    $crema 100%
-  );
+  background-color: $vino;
 }
 
-// Manchas suaves que recuerdan la acuarela del logotipo
-.blobRosa,
-.blobArena {
+/*
+ * La "S" a sangre por el borde derecho.
+ *
+ * Se sale del marco a propósito: en la propuesta el isotipo nunca aparece
+ * contenido y centrado, sino recortado por el borde, como una masa de color
+ * que entra en la composición. Va detrás del texto y sin z-index propio —al
+ * ser el primer hijo posicionado, el contenido se pinta encima por orden de
+ * documento.
+ */
+.marcaGigante {
   position: absolute;
-  border-radius: 50% 42% 58% 40% / 45% 55% 40% 60%;
-  filter: blur(60px);
+  width: auto;
+  color: $periwinkle;
   pointer-events: none;
+
+  /*
+   * La forma NUNCA debe cruzarse con el titular: el texto es rosa y sobre
+   * periwinkle se queda en 1.71:1, ilegible. En pantallas estrechas no hay
+   * columna libre a la derecha, así que se retira al pie y sale por el borde;
+   * sólo a partir de lg, cuando sí sobra ancho, ocupa el costado completo.
+   */
+  // En móvil se ancla al pie y entra bastante en cuadro: antes asomaba tan
+  // poco que no se leía como parte de la composición.
+  right: -14%;
+  bottom: -2%;
+  height: 34%;
+
+  @include md {
+    top: 50%;
+    right: -18%;
+    bottom: auto;
+    height: 68%;
+    transform: translateY(-50%);
+  }
+
+  @include lg {
+    right: -16%;
+    height: 88%;
+  }
+
+  /*
+   * A partir de 1280px el contenedor deja de crecer y el sobrante se reparte
+   * a los lados, así que aquí sí hay sitio para que la forma ocupe casi todo
+   * el alto sin acercarse al titular. Por debajo se va retirando: entre 1024 y
+   * 1280 el texto llega hasta el centro y la "S" lo alcanzaría, dejando el
+   * final del titular en rosa sobre periwinkle (1.71:1).
+   */
+  @include xl {
+    right: -6%;
+    height: 104%;
+  }
 }
 
-.blobRosa {
-  top: -12%;
-  right: -18%;
-  width: 60vw;
-  height: 60vw;
-  max-width: 620px;
-  max-height: 620px;
-  background-color: rgba(244, 201, 214, 0.85);
+.contenido {
+  position: relative;
+  display: flex;
+  min-height: 100svh;
+  flex-direction: column;
+  justify-content: center;
+  // El ancho y el padding lateral los pone la clase .contenedor de
+  // globals.css, compartida con el navbar: así el logotipo del hero cae
+  // exactamente bajo el del navbar.
+  padding-block: 7rem 9rem;
 }
 
-.blobArena {
-  bottom: -22%;
-  left: -20%;
-  width: 55vw;
-  height: 55vw;
-  max-width: 540px;
-  max-height: 540px;
-  background-color: rgba(220, 207, 192, 0.7);
+.logotipo {
+  display: block;
+  width: 15rem;
+  height: auto;
+
+  @include md {
+    width: 22rem;
+  }
+}
+
+.antetitulo {
+  margin-top: 2.25rem;
+  font-size: 0.65rem;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: $rosa;
+  opacity: 0.75;
+
+  @include md {
+    font-size: 0.75rem;
+  }
+}
+
+.titular {
+  max-width: 15ch;
+  margin-top: 1.25rem;
+  font-size: clamp(2.5rem, 8vw, 5rem);
+  line-height: 1.05;
+  text-wrap: balance;
+  color: $rosa;
+
+  em {
+    // La cursiva de la serif sustituye a la antigua fuente de firma
+    font-style: italic;
+    color: $periwinkle;
+  }
+}
+
+.entrada {
+  max-width: 32ch;
+  margin-top: 1.75rem;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: $rosa;
+  opacity: 0.8;
+
+  @include md {
+    font-size: 1.125rem;
+  }
+}
+
+.bajar {
+  position: absolute;
+  bottom: 3.5rem;
+  // Mismo gutter que .contenedor, para que caiga bajo el logotipo
+  left: 1.25rem;
+  color: $rosa;
+
+  @include md {
+    left: 2.5rem;
+  }
 }
 
 // Entrada en CSS: si el JS no corre, `forwards` deja igual el estado final visible

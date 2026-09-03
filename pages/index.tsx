@@ -5,8 +5,8 @@ import Hero from "@/components/sections/Hero";
 import Servicios from "@/components/sections/Servicios";
 import SobreMi from "@/components/sections/SobreMi";
 import Ubicacion from "@/components/sections/Ubicacion";
+import CurvaFluida from "@/components/ui/CurvaFluida";
 import Marquee from "@/components/ui/Marquee";
-import WaveDivider from "@/components/ui/WaveDivider";
 import { site } from "@/lib/site-config";
 
 const frases = [
@@ -27,20 +27,27 @@ export default function Home() {
         <meta property="og:locale" content="es_MX" />
         <meta property="og:title" content={`${site.nombre} | ${site.tagline}`} />
         <meta property="og:description" content={site.descripcion} />
-        <meta property="og:image" content="/logo-sadai.png" />
+        <meta property="og:image" content="/og-image.png" />
       </Head>
 
       <Hero />
 
+      {/*
+        El marquee entra en periwinkle y no en vino: pegado al hero oscuro,
+        una banda vino se fundiría con él y el corte desaparecería. Además es
+        el uso correcto de este color — superficie amplia, con el texto en
+        vino encima (6.48:1), nunca al revés.
+      */}
       <Marquee items={frases} />
-      {/* Cada ola lleva el color de la sección de abajo y el fondo de la de arriba */}
-      <WaveDivider fondo="var(--color-cacao)" color="var(--color-arena)" />
+
+      {/* Cada curva lleva el color de la sección de abajo y el fondo de la de arriba */}
+      <CurvaFluida fondo="var(--color-periwinkle)" color="var(--color-crema)" />
 
       <SobreMi />
-      <WaveDivider fondo="var(--color-arena)" color="var(--color-rosa)" />
+      <CurvaFluida fondo="var(--color-crema)" color="var(--color-rosa)" flip />
 
       <Servicios />
-      <WaveDivider fondo="var(--color-rosa)" color="var(--color-crema)" />
+      <CurvaFluida fondo="var(--color-rosa)" color="var(--color-crema)" />
 
       <Ubicacion />
       <CallToAction />

@@ -9,7 +9,7 @@ export default function Document() {
         <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <link rel="manifest" href="/site.webmanifest" />
-        <meta name="theme-color" content="#F4C9D6" />
+        <meta name="theme-color" content="#3E0619" />
         {/*
           Las secciones aparecen con motion al entrar en pantalla, así que
           salen del servidor en opacity:0. Sin JS nunca se revelarían.

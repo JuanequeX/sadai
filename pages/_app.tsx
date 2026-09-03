@@ -1,27 +1,20 @@
 import type { AppProps } from "next/app";
 import Head from "next/head";
-import { Great_Vibes, Jost, Playfair_Display } from "next/font/google";
+import { Plus_Jakarta_Sans, STIX_Two_Text } from "next/font/google";
 
 import Layout from "@/components/layout/Layout";
 import "@/styles/globals.css";
 
-const playfair = Playfair_Display({
+// La serif de los titulares de la propuesta de identidad.
+const stix = STIX_Two_Text({
   subsets: ["latin"],
   variable: "--fuente-titulo",
   display: "swap",
 });
 
-const jost = Jost({
+const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
   variable: "--fuente-cuerpo",
-  display: "swap",
-});
-
-// La firma que imita el wordmark del logo. Solo existe en weight 400.
-const greatVibes = Great_Vibes({
-  subsets: ["latin"],
-  weight: "400",
-  variable: "--fuente-firma",
   display: "swap",
 });
 
@@ -33,8 +26,11 @@ const greatVibes = Great_Vibes({
  *
  * Se inyecta como <style> plano en vez de styled-jsx: el contenido es estático
  * y así no hace falta que styled-jsx se resuelva en el bundle del cliente.
+ *
+ * Ya no hay fuente de firma: la Propuesta 02 sustituye la script tipográfica
+ * por el logotipo dibujado, que vive en public/ como imagen.
  */
-const variablesTipografia = `:root{--fuente-titulo:${playfair.style.fontFamily};--fuente-cuerpo:${jost.style.fontFamily};--fuente-firma:${greatVibes.style.fontFamily};}`;
+const variablesTipografia = `:root{--fuente-titulo:${stix.style.fontFamily};--fuente-cuerpo:${jakarta.style.fontFamily};}`;
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
