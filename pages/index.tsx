@@ -5,8 +5,8 @@ import Hero from "@/components/sections/Hero";
 import Servicios from "@/components/sections/Servicios";
 import SobreMi from "@/components/sections/SobreMi";
 import Ubicacion from "@/components/sections/Ubicacion";
+import CurvaFluida from "@/components/ui/CurvaFluida";
 import Marquee from "@/components/ui/Marquee";
-import WaveDivider from "@/components/ui/WaveDivider";
 import { site } from "@/lib/site-config";
 
 const frases = [
@@ -27,20 +27,26 @@ export default function Home() {
         <meta property="og:locale" content="es_MX" />
         <meta property="og:title" content={`${site.nombre} | ${site.tagline}`} />
         <meta property="og:description" content={site.descripcion} />
-        <meta property="og:image" content="/logo-sadai.png" />
+        <meta property="og:image" content="/og-image.png" />
       </Head>
 
       <Hero />
 
+      {/*
+        La página es clara de principio a fin, como la propuesta. El marquee y
+        el cierre son las dos únicas franjas en vino: sirven de respiro y de
+        anclaje, no de tono dominante.
+      */}
       <Marquee items={frases} />
-      {/* Cada ola lleva el color de la sección de abajo y el fondo de la de arriba */}
-      <WaveDivider fondo="var(--color-cacao)" color="var(--color-arena)" />
+
+      {/* Cada curva lleva el color de la sección de abajo y el fondo de la de arriba */}
+      <CurvaFluida fondo="var(--color-vino)" color="var(--color-crema)" />
 
       <SobreMi />
-      <WaveDivider fondo="var(--color-arena)" color="var(--color-rosa)" />
+      <CurvaFluida fondo="var(--color-crema)" color="var(--color-rosa)" flip />
 
       <Servicios />
-      <WaveDivider fondo="var(--color-rosa)" color="var(--color-crema)" />
+      <CurvaFluida fondo="var(--color-rosa)" color="var(--color-arena)" />
 
       <Ubicacion />
       <CallToAction />

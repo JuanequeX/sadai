@@ -11,27 +11,19 @@ const servicios = [
 
 export default function Footer() {
   return (
-    <footer className="bg-cacao px-5 pt-16 pb-8 text-crema md:px-10">
-      <div className="mx-auto max-w-7xl">
+    <footer className="bg-vino pt-16 pb-8 text-crema">
+      <div className="contenedor">
         <div className="grid gap-12 md:grid-cols-[1.2fr_1fr_1fr_1.2fr]">
           <div>
-            <div className="flex items-center gap-3">
-              <Image
-                src="/logo-sadai.png"
-                alt=""
-                width={56}
-                height={56}
-                className="size-12 rounded-full object-cover"
-              />
-              <span className="leading-none">
-                <span className="block font-firma text-2xl">
-                  Sadai
-                </span>
-                <span className="block text-[0.55rem] tracking-[0.28em] text-rosa uppercase">
-                  {site.tagline}
-                </span>
-              </span>
-            </div>
+            {/* El lockup ya trae el tagline dibujado, así que aquí no hace
+                falta repetirlo como texto. */}
+            <Image
+              src="/logotipo-lockup-rosa.png"
+              alt={`${site.nombre} — ${site.tagline}`}
+              width={1999}
+              height={659}
+              className="h-16 w-auto"
+            />
             <p className="mt-5 max-w-xs text-sm leading-relaxed text-crema/70">
               Estudio privado de uñas en Manzanillo. Un espacio tranquilo,
               hecho para consentirte.

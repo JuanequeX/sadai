@@ -4,6 +4,7 @@ import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 
 import BotonWhatsApp from "@/components/ui/BotonWhatsApp";
+import Monograma from "@/components/ui/Monograma";
 import { navLinks, site } from "@/lib/site-config";
 
 import styles from "./Navbar.module.scss";
@@ -97,15 +98,21 @@ export default function Navbar() {
   return (
     <>
       <header
-        className={`fixed inset-x-0 top-0 z-50 transition-colors duration-500 ${
-          // Con el menú abierto se deja transparente para fundirse con el overlay rosa
+        className={`fixed inset-x-0 top-0 z-50 text-vino transition-colors duration-500 ${
+          // Con el menú abierto se deja transparente para fundirse con el overlay
           conFondo && !abierto
-            ? "bg-crema/95 shadow-[0_1px_20px_rgba(62,39,35,0.08)] backdrop-blur"
-            : "bg-transparent"
+            ? "bg-crema/95 shadow-[0_1px_20px_rgba(87,13,16,0.10)] backdrop-blur"
+            : // No es `bg-transparent`: el fondo opaco depende de `conFondo`, que
+              // sólo se activa con JS. Sin él el navbar se quedaría transparente
+              // para siempre y este texto vino desaparecería al pasar sobre el
+              // marquee o el cierre, que son las dos franjas oscuras. Este velo
+              // es invisible sobre el hero —mismo crema— y salva la lectura en
+              // cualquier otro sitio.
+              styles.velo
         }`}
       >
         <nav
-          className="mx-auto flex max-w-7xl items-center justify-between px-5 py-3.5 md:px-10"
+          className="contenedor flex items-center justify-between py-3.5"
           aria-label="Navegación principal"
         >
           <Link
@@ -113,22 +120,16 @@ export default function Navbar() {
             className="flex items-center gap-2.5"
             aria-label={`${site.nombre} — inicio`}
           >
+            {/* El logotipo dibujado sustituye al par de líneas de texto: el
+                lockup ya trae el tagline resuelto. */}
             <Image
-              src="/logo-sadai.png"
+              src="/logotipo-lockup.png"
               alt=""
-              width={44}
-              height={44}
+              width={1999}
+              height={659}
               priority
-              className="size-10 rounded-full object-cover md:size-11"
+              className="h-8 w-auto md:h-10"
             />
-            <span className="leading-none">
-              <span className="block font-firma text-xl text-cacao md:text-2xl">
-                Sadai
-              </span>
-              <span className="block text-[0.55rem] tracking-[0.28em] text-cacao-suave uppercase">
-                Artistic Nails
-              </span>
-            </span>
           </Link>
 
           <ul className="hidden items-center gap-9 md:flex">
@@ -170,13 +171,15 @@ export default function Navbar() {
         {abierto ? (
           <motion.div
             id="menu-movil"
-            className="fixed inset-0 z-40 flex flex-col justify-center bg-rosa px-8 pt-20 md:hidden"
+            className="fixed inset-0 z-40 flex flex-col justify-center overflow-hidden bg-rosa px-8 pt-20 md:hidden"
             initial={{ x: sinMovimiento ? 0 : "100%", opacity: sinMovimiento ? 0 : 1 }}
             animate={{ x: 0, opacity: 1 }}
             exit={{ x: sinMovimiento ? 0 : "100%", opacity: sinMovimiento ? 0 : 1 }}
             transition={{ duration: sinMovimiento ? 0.2 : 0.45, ease: [0.22, 1, 0.36, 1] }}
           >
-            <ul className="flex flex-col gap-7">
+            <Monograma className={styles.marcaMenu} />
+
+            <ul className="relative flex flex-col gap-7">
               {navLinks.map((link, i) => (
                 <motion.li
                   key={link.href}
@@ -190,7 +193,7 @@ export default function Navbar() {
                   <a
                     href={link.href}
                     onClick={() => setAbierto(false)}
-                    className="font-titulo text-4xl text-cacao"
+                    className="font-titulo text-4xl text-vino"
                   >
                     {link.label}
                   </a>
@@ -199,13 +202,13 @@ export default function Navbar() {
             </ul>
 
             <motion.div
-              className="mt-12"
+              className="relative mt-12"
               initial={{ opacity: 0, y: sinMovimiento ? 0 : 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: sinMovimiento ? 0 : 0.42, duration: 0.4 }}
             >
               <BotonWhatsApp />
-              <p className="mt-8 text-xs tracking-[0.2em] text-cacao-suave uppercase">
+              <p className="mt-8 text-xs tracking-[0.2em] text-vino-suave uppercase">
                 {site.telefonoVisible}
               </p>
             </motion.div>

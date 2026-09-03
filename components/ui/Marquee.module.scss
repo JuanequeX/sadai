@@ -2,8 +2,8 @@
 
 .banda {
   overflow: hidden;
-  background-color: $cacao;
-  color: $crema;
+  background-color: $vino;
+  color: $rosa;
   padding-block: 0.75rem;
   user-select: none;
 
@@ -50,15 +50,17 @@
   }
 }
 
-.punto {
+.marca {
   display: inline-block;
-  width: 5px;
-  height: 5px;
+  // El monograma es más ancho que alto (646x485); se fija el alto y el ancho
+  // lo resuelve el viewBox.
+  height: 0.8rem;
+  width: auto;
   margin-inline: 1.75rem;
-  border-radius: 9999px;
-  background-color: $rosa;
+  opacity: 0.75;
 
   @include md {
+    height: 0.95rem;
     margin-inline: 2.5rem;
   }
 }

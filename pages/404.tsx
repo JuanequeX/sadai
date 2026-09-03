@@ -11,19 +11,19 @@ export default function NoEncontrada() {
         <meta name="robots" content="noindex" />
       </Head>
 
-      <section className="flex min-h-[100svh] flex-col items-center justify-center bg-crema px-6 text-center">
-        <p className="font-firma text-7xl text-rosa">
+      <section className="flex min-h-[100svh] flex-col items-center justify-center bg-arena px-6 text-center">
+        <p className="font-titulo text-7xl italic text-vino-suave md:text-8xl">
           404
         </p>
-        <h1 className="mt-4 text-3xl text-cacao md:text-4xl">
+        <h1 className="mt-4 text-3xl text-vino md:text-4xl">
           Esta página no existe
         </h1>
-        <p className="mt-4 max-w-sm text-base text-cacao-suave">
+        <p className="mt-4 max-w-sm text-base text-vino-suave">
           Puede que el enlace haya cambiado. Vuelve al inicio y sigue desde ahí.
         </p>
         <Link
           href="/"
-          className="mt-9 inline-flex rounded-full bg-cacao px-7 py-3.5 text-sm font-medium tracking-wide text-crema uppercase transition-colors duration-300 hover:bg-cacao-suave"
+          className="mt-9 inline-flex rounded-full bg-vino px-7 py-3.5 text-sm font-medium tracking-wide text-crema uppercase transition-colors duration-300 hover:bg-vino-suave"
         >
           Volver al inicio
         </Link>

@@ -3,21 +3,24 @@ import Image from "next/image";
 import { ArrowDown } from "lucide-react";
 
 import BotonWhatsApp from "@/components/ui/BotonWhatsApp";
+import Monograma from "@/components/ui/Monograma";
 import { site } from "@/lib/site-config";
 
 import styles from "./Hero.module.scss";
 
 /**
- * Portada a pantalla completa.
+ * Portada a pantalla completa, según el mockup de la propuesta de identidad.
+ *
+ * La composición se parte en dos: el texto a la izquierda sobre fondo claro y
+ * un panel rosa a la derecha con el monograma recortado, como en la tarjeta de
+ * presentación donde la marca se sale del formato. No lleva fotografía: la
+ * única imagen disponible del estudio es un retrato de interior que funciona
+ * en «Sobre mí» pero no sostiene una portada a sangre.
  *
  * La entrada se anima con keyframes de CSS y no con motion: es el contenido
  * above the fold y así queda visible aunque el JS no cargue o la pestaña se
  * abra en segundo plano (Chrome congela requestAnimationFrame ahí y una
  * animación JS se quedaría a medias, con el texto invisible).
- *
- * Hoy el fondo es un degradado de la paleta. Cuando exista una foto real del
- * estudio, colócala en `public/hero.jpg` y sustituye los blobs por un
- * <Image fill priority /> con un overlay cacao al ~35%, como en la referencia.
  */
 export default function Hero() {
   // Escalona la entrada sin repetir la clase en cada elemento
@@ -26,42 +29,42 @@ export default function Hero() {
 
   return (
     <section className={styles.hero}>
-      <div className={styles.blobRosa} aria-hidden="true" />
-      <div className={styles.blobArena} aria-hidden="true" />
+      <div className={styles.panel} aria-hidden="true">
+        <Monograma className={styles.monogramaGigante} />
+      </div>
 
-      <div className="relative z-10 mx-auto flex min-h-[100svh] max-w-4xl flex-col items-center justify-center px-6 py-28 text-center">
+      <div className={`contenedor ${styles.contenido}`}>
         <div className={styles.aparece} style={retraso(0)}>
+          {/*
+            Dimensiones nativas del asset: el export está en `unoptimized`, así
+            que next/image sólo las usa para reservar el hueco y evitar saltos.
+          */}
           <Image
-            src="/logo-sadai.png"
+            src="/logotipo-lockup.png"
             alt={`Logotipo de ${site.nombre}`}
-            width={140}
-            height={140}
+            width={1999}
+            height={659}
             priority
-            className="size-24 rounded-full object-cover shadow-[0_10px_40px_rgba(62,39,35,0.12)] md:size-28"
+            className={styles.logotipo}
           />
         </div>
 
         <p
-          className={`${styles.aparece} mt-8 text-[0.65rem] tracking-[0.34em] text-cacao-suave uppercase md:text-xs`}
+          className={`${styles.aparece} ${styles.antetitulo}`}
           style={retraso(0.1)}
         >
           Estudio privado · Manzanillo
         </p>
 
         <h1
-          className={`${styles.aparece} mt-5 text-4xl leading-[1.1] text-balance text-cacao sm:text-5xl md:text-7xl`}
+          className={`${styles.aparece} ${styles.titular}`}
           style={retraso(0.18)}
         >
-          Uñas que cuentan{" "}
-          {/* pr-* compensa el swash final de la cursiva, que si no roza la palabra siguiente */}
-          <span className="font-firma pr-2 text-[1.25em] leading-none text-rosa [text-shadow:0_1px_0_rgba(62,39,35,0.12)] md:pr-4">
-            tu propia
-          </span>{" "}
-          historia
+          Uñas que cuentan <em>tu propia</em> historia
         </h1>
 
         <p
-          className={`${styles.aparece} mt-7 max-w-md text-base leading-relaxed text-cacao-suave md:text-lg`}
+          className={`${styles.aparece} ${styles.entrada}`}
           style={retraso(0.26)}
         >
           Manicura y pedicura con calma, higiene y detalle. Una clienta a la
@@ -71,18 +74,19 @@ export default function Hero() {
         <div className={`${styles.aparece} mt-10`} style={retraso(0.34)}>
           <BotonWhatsApp />
         </div>
-      </div>
 
-      {/* El centrado va en el contenedor: el keyframe anima transform y pisaría el -translate-x-1/2 */}
-      <div className="absolute bottom-24 left-1/2 z-10 -translate-x-1/2 md:bottom-28">
-        <a
-          href="#sobre-mi"
-          className={`${styles.aparece} block text-cacao-suave`}
-          style={retraso(0.5)}
-          aria-label="Ir a la sección Sobre mí"
-        >
-          <ArrowDown className={styles.flecha} aria-hidden="true" />
-        </a>
+        {/* Dentro del contenedor, no de la sección: sólo así cae bajo el
+            logotipo en vez de pegarse al borde del viewport. */}
+        <div className={styles.bajar}>
+          <a
+            href="#sobre-mi"
+            className={styles.aparece}
+            style={retraso(0.5)}
+            aria-label="Ir a la sección Sobre mí"
+          >
+            <ArrowDown className={styles.flecha} aria-hidden="true" />
+          </a>
+        </div>
       </div>
     </section>
   );
