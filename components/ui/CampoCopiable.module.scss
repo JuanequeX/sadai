@@ -1,0 +1,56 @@
+@use "../../styles/tokens" as *;
+
+.campo {
+  padding: 1.25rem 1.25rem 1.375rem;
+  background-color: $crema;
+  border-radius: 1.5rem 0.5rem;
+
+  @include md {
+    padding: 1.5rem 1.75rem 1.625rem;
+    border-radius: 1.75rem 0.625rem;
+  }
+}
+
+.etiqueta {
+  font-size: 0.65rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: $cacao-suave;
+}
+
+/*
+ * En móvil el botón siempre va debajo, aunque el valor sea corto.
+ *
+ * Dejarlo al ajuste automático hacía que «BBVA» se quedara al lado mientras el
+ * número de cuenta y el nombre empujaban el suyo abajo: las tres tarjetas se
+ * veían desparejas y el corte parecía un accidente. Apilando siempre, además,
+ * el botón ocupa todo el ancho y es más fácil de acertar con el pulgar.
+ */
+.fila {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.875rem;
+  margin-top: 0.75rem;
+
+  @include md {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+  }
+}
+
+.valor {
+  // Tabular para que los dígitos no bailen de ancho entre sí
+  font-variant-numeric: tabular-nums;
+  font-size: 1.125rem;
+  line-height: 1.3;
+  color: $cacao;
+  // El nombre del titular es largo; que parta antes que desbordar
+  overflow-wrap: anywhere;
+
+  @include md {
+    font-size: 1.25rem;
+  }
+}

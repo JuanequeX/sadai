@@ -1,0 +1,48 @@
+@use "../../styles/tokens" as *;
+
+.boton {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  // 44px de alto: el objetivo táctil mínimo recomendado, y este sitio se usa
+  // sobre todo desde el móvil.
+  min-height: 2.75rem;
+  padding-inline: 1.125rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: $crema;
+  background-color: $cacao;
+  border: 0;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: background-color 0.25s ease;
+
+  &:hover {
+    background-color: $cacao-suave;
+  }
+
+  @include sin-movimiento {
+    transition: none;
+  }
+}
+
+// Secundario: sin relleno, para que el sólido siga marcando la acción principal
+.contorno {
+  color: $cacao;
+  background-color: transparent;
+  border: 1px solid $cacao;
+
+  &:hover {
+    color: $crema;
+    background-color: $cacao;
+  }
+}
+
+.icono {
+  width: 0.9rem;
+  height: 0.9rem;
+}
