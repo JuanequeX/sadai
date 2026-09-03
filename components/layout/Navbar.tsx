@@ -35,12 +35,13 @@ export default function Navbar() {
       let masCercana: string | null = null;
       let mejorTop = -Infinity;
       for (const link of navLinks) {
-        const seccion = document.querySelector(link.href);
+        // `ancla`, no `href`: el href lleva "/" delante y no es un selector válido
+        const seccion = document.querySelector(link.ancla);
         if (!seccion) continue;
         const { top } = seccion.getBoundingClientRect();
         if (top <= LINEA_ACTIVA && top > mejorTop) {
           mejorTop = top;
-          masCercana = link.href;
+          masCercana = link.ancla;
         }
       }
       // Arriba del todo (hero) no hay ninguna activa, y así queda
@@ -137,9 +138,9 @@ export default function Navbar() {
                 <a
                   href={link.href}
                   className={`${styles.enlace} ${
-                    activa === link.href ? styles.activo : ""
+                    activa === link.ancla ? styles.activo : ""
                   }`}
-                  aria-current={activa === link.href ? "true" : undefined}
+                  aria-current={activa === link.ancla ? "true" : undefined}
                 >
                   {link.label}
                 </a>

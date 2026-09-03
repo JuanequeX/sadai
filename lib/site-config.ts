@@ -13,6 +13,8 @@ export const site = {
   telefonoVisible: "314 143 4680",
   // Sin emoji: WhatsApp lo corrompe al redirigir de wa.me a api.whatsapp.com
   mensajeWhatsApp: "Hola Sadai, me gustaría agendar una cita ✨",
+  // Mismo criterio: sin emoji. Se manda al mismo número que las citas.
+  mensajeComprobante: "Hola Sadai, te envío el comprobante de mi pago",
 
   instagram: "nailsbysadai",
   instagramUrl: "https://www.instagram.com/nailsbysadai/",
@@ -26,6 +28,19 @@ export const site = {
   horarios: "Lunes a sábado · 10:00 – 21:00",
 
   fundado: 2024,
+
+  /**
+   * Datos para transferencia, los mismos que se publicaban en el sitio previo.
+   *
+   * `cuenta` es un número de tarjeta BBVA de 16 dígitos, no una CLABE, que
+   * lleva 18. Se guarda sin espacios porque es lo que hay que pegar en la app
+   * del banco; el agrupado para leerlo lo hace la vista.
+   */
+  datosBancarios: {
+    banco: "BBVA",
+    titular: "Perla Zurisadai Lopez Cobian",
+    cuenta: "4152314248811682",
+  },
 } as const;
 
 /** Link de WhatsApp con un mensaje a medida, p. ej. el servicio que se reserva. */
@@ -38,9 +53,25 @@ export const whatsappHref = crearWhatsappHref(site.mensajeWhatsApp);
 /** Embed de Google Maps centrado en el estudio (no requiere API key). */
 export const mapaEmbedSrc = `https://maps.google.com/maps?q=${site.coords.lat},${site.coords.lng}&z=17&output=embed`;
 
-/** Anchors del home, compartidos por navbar y footer. */
+/**
+ * Secciones del home, compartidas por navbar y footer.
+ *
+ * Los dos campos no son redundantes:
+ *
+ * - `href` es la URL a la que se navega. Va con `/` delante para que funcione
+ *   también desde otras rutas —/404 o /datos-bancarios—, donde un ancla
+ *   desnuda no lleva a ninguna parte. Desde el home sigue siendo navegación de
+ *   fragmento en el mismo documento, así que el scroll suave se conserva.
+ * - `ancla` es el selector CSS de la sección, y solo lo usa el navbar para
+ *   resolver cuál está a la vista. Tiene que ir por separado porque
+ *   `querySelector("/#sobre-mi")` no es un selector válido: lanzaría excepción
+ *   y tumbaría el navbar entero.
+ */
 export const navLinks = [
-  { href: "#sobre-mi", label: "Sobre mí" },
-  { href: "#servicios", label: "Servicios" },
-  { href: "#ubicacion", label: "Ubicación" },
+  { ancla: "#sobre-mi", href: "/#sobre-mi", label: "Sobre mí" },
+  { ancla: "#servicios", href: "/#servicios", label: "Servicios" },
+  { ancla: "#ubicacion", href: "/#ubicacion", label: "Ubicación" },
 ] as const;
+
+/** Link de WhatsApp para mandar el comprobante de pago. */
+export const comprobanteHref = crearWhatsappHref(site.mensajeComprobante);
