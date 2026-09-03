@@ -1,8 +1,19 @@
 @use "../../styles/tokens" as *;
 
+/*
+ * El arco recorta las esquinas superiores, y por ese hueco se veía el fondo
+ * del body —crema— contra la sección de arriba, que es arena: la diferencia
+ * se leía como una franja suelta. La sección lleva ahora el color de la
+ * sección anterior, así que lo que asoma por el arco es continuidad y no un
+ * corte.
+ */
 .cta {
   position: relative;
-  background-color: $cacao;
+  background-color: $arena;
+}
+
+.arco {
+  background-color: $vino;
   // Arco superior: radio horizontal del 50% del ancho, vertical fijo
   border-top-left-radius: 50% 4rem;
   border-top-right-radius: 50% 4rem;

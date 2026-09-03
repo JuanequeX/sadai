@@ -15,9 +15,9 @@
   position: relative;
   z-index: 2;
   overflow: hidden;
-  // Forma orgánica, como las tarjetas de la referencia
-  border-radius: 14rem 14rem 1.75rem 1.75rem;
-  box-shadow: 0 24px 60px rgba(62, 39, 35, 0.18);
+  // Arco alto, como los formatos de la propuesta
+  border-radius: 12rem 12rem 2rem 6rem;
+  box-shadow: 0 24px 60px rgba(87, 13, 16, 0.16);
 }
 
 .retrato {
@@ -26,7 +26,7 @@
   height: auto;
   aspect-ratio: 4 / 5;
   object-fit: cover;
-  object-position: center 22%;
+  object-position: center 30%;
 }
 
 .tarjetaFlotante {
@@ -36,24 +36,24 @@
   bottom: 0;
   padding: 1.1rem 1.6rem;
   text-align: center;
-  background-color: $crema;
+  background-color: $rosa;
   border-radius: 1.5rem 1.5rem 1.5rem 0.35rem;
-  box-shadow: 0 14px 34px rgba(62, 39, 35, 0.14);
+  box-shadow: 0 14px 34px rgba(87, 13, 16, 0.16);
 
   @include md {
     padding: 1.4rem 2rem;
   }
 }
 
-// Acuarela detrás del retrato
+// El monograma asomando por detrás del retrato, en lugar de la acuarela que
+// pertenecía a la identidad anterior.
 .mancha {
   position: absolute;
   z-index: 1;
-  top: -1.5rem;
-  left: -1.5rem;
-  width: 65%;
-  height: 55%;
-  background-color: rgba(244, 201, 214, 0.9);
-  border-radius: 58% 42% 47% 53% / 52% 45% 55% 48%;
-  filter: blur(2px);
+  top: -2.5rem;
+  left: -4rem;
+  height: 30%;
+  width: auto;
+  color: $rosa;
+  pointer-events: none;
 }

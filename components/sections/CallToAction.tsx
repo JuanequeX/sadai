@@ -11,7 +11,11 @@ const ARCO = "M40,200 A360,90 0 0 1 760,200";
 export default function CallToAction() {
   return (
     <section className={styles.cta}>
-      <div className="mx-auto max-w-3xl px-6 pb-16 text-center md:pb-20">
+      {/* El arco vive en su propio elemento para que la sección pueda llevar
+          detrás el color de la de arriba. Ver la nota en el SCSS. */}
+      <div className={styles.arco}>
+        <div className="contenedor pb-16 text-center md:pb-20">
+        <div className="mx-auto max-w-3xl">
         <Reveal>
           <svg
             className={styles.tituloCurvo}
@@ -48,6 +52,8 @@ export default function CallToAction() {
             </a>
           </div>
         </Reveal>
+          </div>
+        </div>
       </div>
     </section>
   );
