@@ -199,11 +199,32 @@ export default function Navbar() {
               ))}
             </ul>
 
+            {/*
+              Fuera de la lista de anclas y en un cuerpo menor: no es otra
+              sección del home sino otra página, y conviene que se lea así.
+              Solo vive aquí — ni en el menú de escritorio, ni en el pie, ni en
+              el home—, porque es un enlace que se comparte al cobrar.
+            */}
             <motion.div
-              className="mt-12"
+              className="mt-9 border-t border-cacao/15 pt-6"
               initial={{ opacity: 0, y: sinMovimiento ? 0 : 16 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: sinMovimiento ? 0 : 0.42, duration: 0.4 }}
+              transition={{ delay: sinMovimiento ? 0 : 0.4, duration: 0.4 }}
+            >
+              <Link
+                href="/datos-bancarios"
+                onClick={() => setAbierto(false)}
+                className="text-sm tracking-[0.16em] text-cacao uppercase"
+              >
+                Datos bancarios
+              </Link>
+            </motion.div>
+
+            <motion.div
+              className="mt-10"
+              initial={{ opacity: 0, y: sinMovimiento ? 0 : 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: sinMovimiento ? 0 : 0.48, duration: 0.4 }}
             >
               <BotonWhatsApp />
               <p className="mt-8 text-xs tracking-[0.2em] text-cacao-suave uppercase">
