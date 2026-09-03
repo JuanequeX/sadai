@@ -36,26 +36,31 @@
 
 .monogramaGigante {
   position: absolute;
-  // Recortado por el borde del panel, como en la papelería, pero no tanto que
-  // deje de leerse como monograma: por debajo de esto se vuelve una mancha.
-  right: -6%;
-  bottom: -14%;
-  height: 96%;
+  /*
+   * Entero dentro del panel, sin sangrar por el borde.
+   *
+   * La "i" es la letra más a la derecha del monograma y ocupa apenas su
+   * último 15%, así que recortar un 8% ya se la comía y la marca se leía
+   * "sd". Aquí prima que se reconozca sobre el gesto de salirse del formato.
+   */
+  right: 7%;
+  bottom: 6%;
+  height: 74%;
   width: auto;
   color: $vino;
   pointer-events: none;
 
   @include md {
     top: 50%;
-    right: -24%;
+    right: 9%;
     bottom: auto;
-    height: 40%;
+    height: 28%;
     transform: translateY(-50%);
   }
 
   @include lg {
-    right: -18%;
-    height: 44%;
+    right: 8%;
+    height: 32%;
   }
 }
 
