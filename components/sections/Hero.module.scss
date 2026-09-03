@@ -27,21 +27,35 @@
    * columna libre a la derecha, así que se retira al pie y sale por el borde;
    * sólo a partir de lg, cuando sí sobra ancho, ocupa el costado completo.
    */
-  right: -30%;
-  bottom: -4%;
-  height: 38%;
+  // En móvil se ancla al pie y entra bastante en cuadro: antes asomaba tan
+  // poco que no se leía como parte de la composición.
+  right: -14%;
+  bottom: -2%;
+  height: 34%;
 
   @include md {
     top: 50%;
-    right: -16%;
+    right: -18%;
     bottom: auto;
-    height: 62%;
+    height: 68%;
     transform: translateY(-50%);
   }
 
   @include lg {
-    right: -2%;
-    height: 86%;
+    right: -16%;
+    height: 88%;
+  }
+
+  /*
+   * A partir de 1280px el contenedor deja de crecer y el sobrante se reparte
+   * a los lados, así que aquí sí hay sitio para que la forma ocupe casi todo
+   * el alto sin acercarse al titular. Por debajo se va retirando: entre 1024 y
+   * 1280 el texto llega hasta el centro y la "S" lo alcanzaría, dejando el
+   * final del titular en rosa sobre periwinkle (1.71:1).
+   */
+  @include xl {
+    right: -6%;
+    height: 104%;
   }
 }
 
@@ -49,15 +63,12 @@
   position: relative;
   display: flex;
   min-height: 100svh;
-  max-width: 72rem;
   flex-direction: column;
   justify-content: center;
-  margin-inline: auto;
-  padding: 7rem 1.5rem 9rem;
-
-  @include md {
-    padding-inline: 2.5rem;
-  }
+  // El ancho y el padding lateral los pone la clase .contenedor de
+  // globals.css, compartida con el navbar: así el logotipo del hero cae
+  // exactamente bajo el del navbar.
+  padding-block: 7rem 9rem;
 }
 
 .logotipo {
@@ -114,7 +125,8 @@
 .bajar {
   position: absolute;
   bottom: 3.5rem;
-  left: 1.5rem;
+  // Mismo gutter que .contenedor, para que caiga bajo el logotipo
+  left: 1.25rem;
   color: $rosa;
 
   @include md {

@@ -114,7 +114,7 @@ export default function Navbar() {
         }`}
       >
         <nav
-          className="mx-auto flex max-w-7xl items-center justify-between px-5 py-3.5 md:px-10"
+          className="contenedor flex items-center justify-between py-3.5"
           aria-label="Navegación principal"
         >
           <Link

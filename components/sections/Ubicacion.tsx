@@ -11,8 +11,8 @@ const datos = [
 
 export default function Ubicacion() {
   return (
-    <section id="ubicacion" className="bg-crema px-5 py-20 md:px-10 md:py-28">
-      <div className="mx-auto max-w-6xl">
+    <section id="ubicacion" className="bg-crema py-20 md:py-28">
+      <div className="contenedor">
         <div className="grid gap-12 lg:grid-cols-[1fr_1.15fr] lg:items-center lg:gap-16">
           <div>
             <Reveal>

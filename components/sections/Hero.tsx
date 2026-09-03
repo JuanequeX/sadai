@@ -29,7 +29,7 @@ export default function Hero() {
     <section className={styles.hero}>
       <Isotipo className={styles.marcaGigante} />
 
-      <div className={styles.contenido}>
+      <div className={`contenedor ${styles.contenido}`}>
         <div className={styles.aparece} style={retraso(0)}>
           {/*
             Dimensiones nativas del asset: el export está en `unoptimized`, así
@@ -70,18 +70,19 @@ export default function Hero() {
         <div className={`${styles.aparece} mt-10`} style={retraso(0.34)}>
           <BotonWhatsApp variante="claro" />
         </div>
-      </div>
 
-      {/* El centrado va en el contenedor: el keyframe anima transform y pisaría el -translate-x-1/2 */}
-      <div className={styles.bajar}>
-        <a
-          href="#sobre-mi"
-          className={styles.aparece}
-          style={retraso(0.5)}
-          aria-label="Ir a la sección Sobre mí"
-        >
-          <ArrowDown className={styles.flecha} aria-hidden="true" />
-        </a>
+        {/* Dentro del contenedor, no de la sección: sólo así cae bajo el
+            logotipo en vez de pegarse al borde del viewport. */}
+        <div className={styles.bajar}>
+          <a
+            href="#sobre-mi"
+            className={styles.aparece}
+            style={retraso(0.5)}
+            aria-label="Ir a la sección Sobre mí"
+          >
+            <ArrowDown className={styles.flecha} aria-hidden="true" />
+          </a>
+        </div>
       </div>
     </section>
   );

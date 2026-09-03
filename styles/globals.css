@@ -1,19 +1,22 @@
 @import "tailwindcss";
 
 /*
- * Paleta de la Propuesta 02 de identidad (Not Alias).
+ * Paleta de la Propuesta 02 de identidad (Not Alias), con el neutro tomado de
+ * la Propuesta 01.
  * Los hex se muestrearon del arte original, no se estimaron.
  * Los mismos valores viven en styles/_tokens.scss para los SCSS modules.
  */
 @theme {
   --color-vino: #3e0619;
   --color-rosa: #efc6da;
-  --color-crema: #f6eecf;
+  /* Arena de la Propuesta 01: el crema amarillento de la 02 resultaba ácido
+     en superficies grandes. */
+  --color-crema: #eedabc;
   --color-azul: #abbfd8;
 
   /*
    * El periwinkle es color de FORMA, nunca de texto sobre fondos claros:
-   * da 1.71:1 sobre rosa y 2.24:1 sobre crema, así que ni siquiera pasa el
+   * da 1.71:1 sobre rosa y 1.91:1 sobre la arena, así que ni siquiera pasa el
    * mínimo de texto grande. Sobre vino sí es legible (6.48:1).
    */
   --color-periwinkle: #9199f4;
@@ -24,6 +27,32 @@
 
   --font-titulo: var(--fuente-titulo), Georgia, serif;
   --font-cuerpo: var(--fuente-cuerpo), system-ui, sans-serif;
+}
+
+@layer components {
+  /*
+   * Contenedor único de la página.
+   *
+   * Todo lo que deba alinearse con el logotipo del navbar pasa por aquí. Antes
+   * cada sección repetía su propio `max-w-*` y su propio padding, y bastó con
+   * que el hero declarara 72rem frente a las 80rem del navbar para que el
+   * contenido arrancara 64px más adentro. Con una sola declaración esa deriva
+   * no puede volver a ocurrir.
+   *
+   * El padding lateral vive aquí y no en la sección, para que el color de
+   * fondo siga llegando a sangre.
+   */
+  .contenedor {
+    margin-inline: auto;
+    max-inline-size: 80rem;
+    padding-inline: 1.25rem;
+  }
+
+  @media (min-width: 48rem) {
+    .contenedor {
+      padding-inline: 2.5rem;
+    }
+  }
 }
 
 @layer base {

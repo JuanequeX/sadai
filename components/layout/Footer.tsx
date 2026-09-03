@@ -11,8 +11,8 @@ const servicios = [
 
 export default function Footer() {
   return (
-    <footer className="bg-vino px-5 pt-16 pb-8 text-crema md:px-10">
-      <div className="mx-auto max-w-7xl">
+    <footer className="bg-vino pt-16 pb-8 text-crema">
+      <div className="contenedor">
         <div className="grid gap-12 md:grid-cols-[1.2fr_1fr_1fr_1.2fr]">
           <div>
             {/* El lockup ya trae el tagline dibujado, así que aquí no hace

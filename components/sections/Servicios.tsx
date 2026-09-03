@@ -31,8 +31,8 @@ const servicios: Servicio[] = [
 
 export default function Servicios() {
   return (
-    <section id="servicios" className="bg-rosa px-5 py-20 md:px-10 md:py-28">
-      <div className="mx-auto max-w-6xl">
+    <section id="servicios" className="bg-rosa py-20 md:py-28">
+      <div className="contenedor">
         <div className="text-center">
           <Reveal>
             <p className="text-[0.65rem] tracking-[0.3em] text-vino-suave uppercase">
