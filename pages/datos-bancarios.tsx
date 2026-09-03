@@ -94,7 +94,7 @@ export default function DatosBancarios() {
             <div className="mt-10 rounded-[2rem_0.75rem] bg-rosa px-6 py-8 text-center md:px-8">
               <h2 className="text-2xl text-cacao">¿Ya transferiste?</h2>
               <p className="mx-auto mt-3 max-w-sm text-sm leading-relaxed text-cacao-suave">
-                Mándame la captura y te confirmo y te confirmo en cuanto la vea.
+                Mándame la captura y te confirmo en cuanto la vea.
               </p>
               <div className="mt-6">
                 <BotonWhatsApp mensaje={site.mensajeComprobante}>
