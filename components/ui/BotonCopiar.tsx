@@ -17,6 +17,8 @@ type BotonCopiarProps = {
    * aprovecha esto para seleccionar el texto y que se pueda copiar a mano.
    */
   alFallar?: () => void;
+  /** Avisa cuando cambia el estado de confirmación (p. ej. para resaltar la tarjeta). */
+  alCopiar?: (copiado: boolean) => void;
 };
 
 /** Cuánto dura la confirmación antes de volver a «Copiar». */
@@ -33,6 +35,7 @@ export default function BotonCopiar({
   variante = "solido",
   className = "",
   alFallar,
+  alCopiar,
 }: BotonCopiarProps) {
   const [copiado, setCopiado] = useState(false);
 
@@ -40,14 +43,18 @@ export default function BotonCopiar({
   // antes de que venza el plazo.
   useEffect(() => {
     if (!copiado) return;
-    const t = setTimeout(() => setCopiado(false), MS_CONFIRMACION);
+    const t = setTimeout(() => {
+      setCopiado(false);
+      alCopiar?.(false);
+    }, MS_CONFIRMACION);
     return () => clearTimeout(t);
-  }, [copiado]);
+  }, [copiado, alCopiar]);
 
   const copiar = async () => {
     try {
       await navigator.clipboard.writeText(valor);
       setCopiado(true);
+      alCopiar?.(true);
     } catch {
       // El portapapeles falla en contextos no seguros y si se deniega el
       // permiso. Antes que dejar un botón que no hace nada, se delega.
@@ -61,12 +68,14 @@ export default function BotonCopiar({
         type="button"
         onClick={copiar}
         className={`${styles.boton} ${variante === "contorno" ? styles.contorno : ""} ${className}`}
-        aria-label={`Copiar ${etiqueta.toLowerCase()}`}
+        // Con el texto por defecto ("Copiar") el nombre accesible dice qué se copia. Con un texto
+        // propio no se pisa: el nombre debe contener lo visible (WCAG 2.5.3, label-in-name).
+        aria-label={children === "Copiar" ? `Copiar ${etiqueta.toLowerCase()}` : undefined}
       >
         {copiado ? (
-          <Check className={styles.icono} aria-hidden="true" />
+          <Check className={styles.icono} strokeWidth={1.5} aria-hidden="true" />
         ) : (
-          <Copy className={styles.icono} aria-hidden="true" />
+          <Copy className={styles.icono} strokeWidth={1.5} aria-hidden="true" />
         )}
         {copiado ? "Copiado" : children}
       </button>

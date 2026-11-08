@@ -1,0 +1,11 @@
+/*
+ * --grad-04 con el texto sobre la zona oscura (PLAN F5.1). La franja superior (navbar marfil)
+ * arranca ya en #7A3146 (marfil ≥ 7:1) y el resplandor rosado del aura queda abajo a la
+ * derecha, lejos del texto.
+ */
+.pagina.pagina {
+  background-image:
+    radial-gradient(ellipse 45% 35% at 92% 100%, #c58592 0%, #a96773 40%, transparent 100%),
+    radial-gradient(ellipse 40% 30% at 0% 0%, #63192c 0%, transparent 100%),
+    linear-gradient(180deg, #7a3146 0%, #63192c 55%, #440019 100%);
+}

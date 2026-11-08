@@ -3,19 +3,26 @@
  * Cambiar aquí se refleja en navbar, secciones y footer.
  */
 export const site = {
+  // TODO(PRD §12.5): ¿"Sadai Artistic Nails"?
   nombre: "Nails by Sadai",
+  /** Nombre accesible de los logotipos (el logotipo es el nombre). */
+  marca: "Sadai",
   tagline: "Artistic Nails",
   descripcion:
-    "Estudio privado de uñas en Manzanillo, Colima. Manicura y pedicura con atención personalizada, una clienta a la vez.",
+    "Estudio privado de uñas artísticas en Manzanillo, Colima. Diseños personalizados, manicura, pedicura y acrílico.",
+  url: "https://sadai.mx",
 
   // Formato internacional sin signos: 52 (México) + 10 dígitos
   whatsapp: "523141434680",
   telefonoVisible: "314 143 4680",
   // Sin emoji: WhatsApp lo corrompe al redirigir de wa.me a api.whatsapp.com
-  mensajeWhatsApp: "Hola Sadai, me gustaría agendar una cita ✨",
+  mensajeWhatsApp: "Hola Sadai, me gustaría agendar una cita",
   // Mismo criterio: sin emoji. Se manda al mismo número que las citas.
   mensajeComprobante: "Hola Sadai, te envío el comprobante de mi pago",
+  mensajeCotizacion:
+    "Hola Sadai, quiero cotizar un diseño. Te envío mi foto de inspiración y la técnica que me gusta.",
 
+  // TODO(PRD §12.4): mockups usan sadai.artisticnails
   instagram: "nailsbysadai",
   instagramUrl: "https://www.instagram.com/nailsbysadai/",
 
@@ -24,8 +31,11 @@ export const site = {
 
   // TODO: confirmar calle, colonia y CP exactos con Sadai
   direccion: "Manzanillo, Colima",
-  // TODO: confirmar horarios reales del estudio
-  horarios: "Lunes a sábado · 10:00 – 21:00",
+  /** Horario de atención (confirmado por Sadai, 2026-11-08). Domingo cerrado. */
+  horarios: [
+    { dias: "Lunes a viernes", horas: "9:00 – 22:00", schema: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], abre: "09:00", cierra: "22:00" },
+    { dias: "Sábados", horas: "9:00 – 14:00", schema: ["Saturday"], abre: "09:00", cierra: "14:00" },
+  ],
 
   fundado: 2024,
 
@@ -47,6 +57,13 @@ export const site = {
 export const crearWhatsappHref = (mensaje: string) =>
   `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(mensaje)}`;
 
+/** Mensaje para agendar un servicio concreto del menú. */
+export const crearMensajeServicio = (servicio: string, categoria: string) =>
+  `Hola Sadai, me gustaría agendar: ${servicio} (${categoria}).`;
+
+/** Enlace `tel:` en formato internacional. */
+export const telefonoHref = `tel:+52${site.telefonoVisible.replace(/\s/g, "")}`;
+
 /** Link de WhatsApp con el mensaje genérico ya precargado. */
 export const whatsappHref = crearWhatsappHref(site.mensajeWhatsApp);
 
@@ -54,24 +71,26 @@ export const whatsappHref = crearWhatsappHref(site.mensajeWhatsApp);
 export const mapaEmbedSrc = `https://maps.google.com/maps?q=${site.coords.lat},${site.coords.lng}&z=17&output=embed`;
 
 /**
- * Secciones del home, compartidas por navbar y footer.
+ * Enlaces del menú principal, compartidos por navbar (escritorio y móvil) y footer.
  *
- * Los dos campos no son redundantes:
- *
- * - `href` es la URL a la que se navega. Va con `/` delante para que funcione
- *   también desde otras rutas —/404 o /datos-bancarios—, donde un ancla
- *   desnuda no lleva a ninguna parte. Desde el home sigue siendo navegación de
- *   fragmento en el mismo documento, así que el scroll suave se conserva.
- * - `ancla` es el selector CSS de la sección, y solo lo usa el navbar para
- *   resolver cuál está a la vista. Tiene que ir por separado porque
- *   `querySelector("/#sobre-mi")` no es un selector válido: lanzaría excepción
- *   y tumbaría el navbar entero.
+ * - `href` es la URL a la que se navega. Las secciones del home van con `/` delante para que
+ *   funcionen también desde otras rutas —/404, /datos-bancarios—; desde el home sigue siendo
+ *   navegación de fragmento en el mismo documento, así que el scroll suave se conserva.
+ * - `ancla` es el selector CSS de la sección y solo lo usa el navbar para resolver cuál está a
+ *   la vista (`querySelector("/#sobre-mi")` lanzaría excepción). Las páginas propias, como
+ *   /datos-bancarios, no tienen ancla: se marcan activas por ruta.
  */
-export const navLinks = [
+export type EnlaceNav = { href: string; label: string; ancla: string | null };
+
+export const navLinks: readonly EnlaceNav[] = [
   { ancla: "#sobre-mi", href: "/#sobre-mi", label: "Sobre mí" },
   { ancla: "#servicios", href: "/#servicios", label: "Servicios" },
   { ancla: "#ubicacion", href: "/#ubicacion", label: "Ubicación" },
-] as const;
+  { ancla: null, href: "/datos-bancarios", label: "Datos bancarios" },
+];
+
+/** Página con el croquis para llegar desde el Boulevard Miguel de la Madrid. */
+export const rutaComoLlegar = "/como-llegar";
 
 /** Link de WhatsApp para mandar el comprobante de pago. */
 export const comprobanteHref = crearWhatsappHref(site.mensajeComprobante);

@@ -1,89 +1,98 @@
 import type { CSSProperties } from "react";
-import Image from "next/image";
 import { ArrowDown } from "lucide-react";
 
+import Logotipo from "@/components/marca/Logotipo";
 import BotonWhatsApp from "@/components/ui/BotonWhatsApp";
+import Degradado from "@/components/ui/Degradado";
+import Imagen from "@/components/ui/Imagen";
+import type { FuenteImagen } from "@/lib/imagenes";
 import { site } from "@/lib/site-config";
 
 import styles from "./Hero.module.scss";
 
+type FotoHero = FuenteImagen & { alt: string; posicion?: string };
+
 /**
- * Portada a pantalla completa.
+ * Portada (PRD §6.2, mockup "Presencia digital").
  *
- * La entrada se anima con keyframes de CSS y no con motion: es el contenido
- * above the fold y así queda visible aunque el JS no cargue o la pestaña se
- * abra en segundo plano (Chrome congela requestAnimationFrame ahí y una
- * animación JS se quedaría a medias, con el texto invisible).
+ * Por defecto, sin foto: panel de degradado aura a ancho completo. Con `foto` cambia al
+ * layout dividido 50/50 en desktop (foto debajo en 4:5 en móvil). Hoy no se pasa: no hay
+ * fotografía con licencia (PRD §12.2).
  *
- * Hoy el fondo es un degradado de la paleta. Cuando exista una foto real del
- * estudio, colócala en `public/hero.jpg` y sustituye los blobs por un
- * <Image fill priority /> con un overlay cacao al ~35%, como en la referencia.
+ * Fondo "seda" inspirado en el Degradado 05 (Hero.module.scss). Todo el texto va en marfil:
+ * los tonos que cruzan la columna central están acotados para que marfil cumpla ≥ 4.5:1.
+ *
+ * La entrada es por keyframes de CSS, no JS: el above-the-fold queda visible aunque el JS
+ * no cargue. El h1 y el lead solo se desplazan (sin opacity 0) para no retrasar el LCP.
  */
-export default function Hero() {
-  // Escalona la entrada sin repetir la clase en cada elemento
-  const retraso = (segundos: number) =>
-    ({ animationDelay: `${segundos}s` }) as CSSProperties;
+export default function Hero({ foto }: { foto?: FotoHero }) {
+  const retraso = (ms: number) => ({ animationDelay: `${ms}ms` }) as CSSProperties;
+
+  const panel = (
+    <Degradado
+      variante="aura"
+      grano
+      className={`${styles.panel} flex flex-col pt-[var(--altura-navbar)]`}
+    >
+      <div className="contenedor flex flex-1 flex-col items-center justify-between gap-8 text-center">
+        <p className={`${styles.aparece} mt-2 w-full`} style={retraso(0)}>
+          <Logotipo titulo={site.marca} className="mx-auto h-auto w-[min(64vw,500px)] min-w-[240px] text-marfil" />
+        </p>
+
+        <div className={`${styles.titular} flex flex-col items-center gap-5`}>
+          <h1 id="hero-titulo" className={`${styles.desliza} font-titulo text-display text-marfil`} style={retraso(100)}>
+            Tus uñas.
+            <br />
+            Tu forma
+            <br />
+            de decirlo.
+          </h1>
+          <p className={`${styles.desliza} max-w-[28ch] text-lead text-marfil`} style={retraso(180)}>
+            Estudio privado de uñas artísticas en Manzanillo, Colima.
+          </p>
+        </div>
+
+        <div className={`${styles.cta} flex flex-col items-center gap-4`}>
+          <div className={`${styles.aparece} flex flex-col items-center gap-2 sm:flex-row sm:gap-6`} style={retraso(260)}>
+            <BotonWhatsApp variante="contorno-marfil" />
+            <a
+              href="#servicios"
+              className="inline-flex min-h-11 items-center px-2 text-etiqueta font-semibold text-marfil underline underline-offset-4 hover:no-underline"
+            >
+              Ver servicios
+            </a>
+          </div>
+          <a
+            href="#sobre-mi"
+            className={`${styles.aparece} hidden min-h-11 min-w-11 items-center justify-center text-marfil-75 hover:text-marfil md:inline-flex`}
+            style={retraso(420)}
+            aria-label="Ir a la sección Sobre mí"
+          >
+            <ArrowDown className={`${styles.flecha} size-5`} strokeWidth={1.5} aria-hidden="true" />
+          </a>
+        </div>
+      </div>
+    </Degradado>
+  );
+
+  if (!foto) {
+    return (
+      <section aria-labelledby="hero-titulo" className={styles.hero}>
+        {panel}
+      </section>
+    );
+  }
 
   return (
-    <section className={styles.hero}>
-      <div className={styles.blobRosa} aria-hidden="true" />
-      <div className={styles.blobArena} aria-hidden="true" />
-
-      <div className="relative z-10 mx-auto flex min-h-[100svh] max-w-4xl flex-col items-center justify-center px-6 py-28 text-center">
-        <div className={styles.aparece} style={retraso(0)}>
-          <Image
-            src="/logo-sadai.png"
-            alt={`Logotipo de ${site.nombre}`}
-            width={140}
-            height={140}
-            priority
-            className="size-24 rounded-full object-cover shadow-[0_10px_40px_rgba(62,39,35,0.12)] md:size-28"
-          />
-        </div>
-
-        <p
-          className={`${styles.aparece} mt-8 text-[0.65rem] tracking-[0.34em] text-cacao-suave uppercase md:text-xs`}
-          style={retraso(0.1)}
-        >
-          Estudio privado · Manzanillo
-        </p>
-
-        <h1
-          className={`${styles.aparece} mt-5 text-4xl leading-[1.1] text-balance text-cacao sm:text-5xl md:text-7xl`}
-          style={retraso(0.18)}
-        >
-          Uñas que cuentan{" "}
-          {/* pr-* compensa el swash final de la cursiva, que si no roza la palabra siguiente */}
-          <span className="font-firma pr-2 text-[1.25em] leading-none text-rosa [text-shadow:0_1px_0_rgba(62,39,35,0.12)] md:pr-4">
-            tu propia
-          </span>{" "}
-          historia
-        </h1>
-
-        <p
-          className={`${styles.aparece} mt-7 max-w-md text-base leading-relaxed text-cacao-suave md:text-lg`}
-          style={retraso(0.26)}
-        >
-          Manicura y pedicura con calma, higiene y detalle. Una clienta a la
-          vez, para que el tiempo aquí también sea tuyo.
-        </p>
-
-        <div className={`${styles.aparece} mt-10`} style={retraso(0.34)}>
-          <BotonWhatsApp />
-        </div>
-      </div>
-
-      {/* El centrado va en el contenedor: el keyframe anima transform y pisaría el -translate-x-1/2 */}
-      <div className="absolute bottom-24 left-1/2 z-10 -translate-x-1/2 md:bottom-28">
-        <a
-          href="#sobre-mi"
-          className={`${styles.aparece} block text-cacao-suave`}
-          style={retraso(0.5)}
-          aria-label="Ir a la sección Sobre mí"
-        >
-          <ArrowDown className={styles.flecha} aria-hidden="true" />
-        </a>
-      </div>
+    <section aria-labelledby="hero-titulo" className={`${styles.hero} lg:grid lg:grid-cols-2`}>
+      {panel}
+      <Imagen
+        {...foto}
+        prioridad
+        sizes="(min-width:1024px) 50vw, 100vw"
+        className="block"
+        classNameImg="aspect-[4/5] size-full object-cover lg:aspect-auto"
+      />
     </section>
   );
 }

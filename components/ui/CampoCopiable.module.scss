@@ -2,36 +2,36 @@
 
 .campo {
   padding: 1.25rem 1.25rem 1.375rem;
-  background-color: $crema;
-  border-radius: 1.5rem 0.5rem;
+  background-color: $marfil;
+  border: 1px solid $linea;
+  border-radius: $radio-tarjeta;
+  transition: border-color 200ms $ease-marca;
+
+  &[data-copiado] {
+    border-color: $vino;
+  }
 
   @include md {
     padding: 1.5rem 1.75rem 1.625rem;
-    border-radius: 1.75rem 0.625rem;
   }
 }
 
 .etiqueta {
-  font-size: 0.65rem;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
-  color: $cacao-suave;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: $vino-70;
 }
 
 /*
- * En móvil el botón siempre va debajo, aunque el valor sea corto.
- *
- * Dejarlo al ajuste automático hacía que «BBVA» se quedara al lado mientras el
- * número de cuenta y el nombre empujaban el suyo abajo: las tres tarjetas se
- * veían desparejas y el corte parecía un accidente. Apilando siempre, además,
- * el botón ocupa todo el ancho y es más fácil de acertar con el pulgar.
+ * En móvil el botón siempre va debajo, aunque el valor sea corto: las tres tarjetas
+ * quedan parejas y el botón ocupa todo el ancho, más fácil de acertar con el pulgar.
  */
 .fila {
   display: flex;
   flex-direction: column;
   align-items: stretch;
   gap: 0.875rem;
-  margin-top: 0.75rem;
+  margin-top: 0.5rem;
 
   @include md {
     flex-direction: row;
@@ -42,11 +42,11 @@
 }
 
 .valor {
-  // Tabular para que los dígitos no bailen de ancho entre sí
   font-variant-numeric: tabular-nums;
   font-size: 1.125rem;
+  font-weight: 600;
   line-height: 1.3;
-  color: $cacao;
+  color: $vino;
   // El nombre del titular es largo; que parta antes que desbordar
   overflow-wrap: anywhere;
 

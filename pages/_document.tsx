@@ -1,5 +1,16 @@
 import { Head, Html, Main, NextScript } from "next/document";
 
+/*
+ * Sin JS: los reveals salen visibles, los tres paneles del menú se apilan y las
+ * pestañas (que no funcionarían) se ocultan.
+ */
+const ESTILOS_SIN_JS = [
+  "[data-reveal]{opacity:1!important;transform:none!important}",
+  "[data-panel-servicios]{display:block!important;visibility:visible!important;opacity:1!important;position:static!important;grid-area:auto!important;margin-bottom:1.5rem}",
+  "[data-tablist-servicios]{display:none!important}",
+  "[data-pausa-marquee]{display:none!important}",
+].join("");
+
 export default function Document() {
   return (
     <Html lang="es-MX">
@@ -9,18 +20,9 @@ export default function Document() {
         <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <link rel="manifest" href="/site.webmanifest" />
-        <meta name="theme-color" content="#F4C9D6" />
-        {/*
-          Las secciones aparecen con motion al entrar en pantalla, así que
-          salen del servidor en opacity:0. Sin JS nunca se revelarían.
-        */}
+        <meta name="theme-color" content="#440019" />
         <noscript>
-          <style
-            dangerouslySetInnerHTML={{
-              __html:
-                "[data-reveal]{opacity:1!important;transform:none!important}",
-            }}
-          />
+          <style dangerouslySetInnerHTML={{ __html: ESTILOS_SIN_JS }} />
         </noscript>
       </Head>
       <body className="antialiased">

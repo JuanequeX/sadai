@@ -5,13 +5,13 @@
   "scripts": {
     "dev": "next dev",
     "prebuild": "rm -rf .next/dev",
-    "build": "next build",
+    "build": "next build --webpack",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "assets": "node scripts/optimizar-assets.mjs"
   },
   "dependencies": {
     "lucide-react": "^1.30.0",
-    "motion": "^13.0.0",
     "next": "16.3.0",
     "react": "19.2.8",
     "react-dom": "19.2.8"
@@ -24,6 +24,8 @@
     "eslint": "^9",
     "eslint-config-next": "16.3.0",
     "sass": "^1.102.0",
+    "sharp": "0.35.3",
+    "svgo": "^4.1.0",
     "tailwindcss": "^4",
     "typescript": "^5"
   },

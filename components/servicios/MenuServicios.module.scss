@@ -1,0 +1,30 @@
+@use "../../styles/tokens" as *;
+
+// Solo el panel activo ocupa espacio: el alto se adapta a cada categoría (Pies y Retiros no
+// heredan el hueco de Manos). El cambio lo provoca un toque del usuario, así que no cuenta
+// como CLS; las notas de desktop son sticky y no dependen de este alto.
+.panel {
+  display: none;
+
+  &[data-activo] {
+    display: block;
+
+    @include con-movimiento {
+      animation: entrar 200ms $ease-marca;
+    }
+  }
+}
+
+@keyframes entrar {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+// Tarjeta de cotización: --grad-01 oscurecido (token --grad-cotizacion en globals.css) para que
+// el marfil cumpla ≥ 4.5:1 en todo el bloque (el claro original daba ≈ 3.5:1).
+// Doble clase: gana a .v01 de Degradado.
+.cotizacion.cotizacion {
+  background-image: var(--grad-cotizacion);
+}

@@ -1,35 +1,13 @@
-@use "../../styles/tokens" as *;
-
-.cta {
-  position: relative;
-  background-color: $cacao;
-  // Arco superior: radio horizontal del 50% del ancho, vertical fijo
-  border-top-left-radius: 50% 4rem;
-  border-top-right-radius: 50% 4rem;
-  padding-top: 1rem;
-
-  @include md {
-    border-top-left-radius: 50% 7rem;
-    border-top-right-radius: 50% 7rem;
-    padding-top: 2rem;
-  }
+/*
+ * --grad-04 con el resplandor claro movido arriba (PLAN F4.7): el texto marfil cae sobre la
+ * base vino (≤ #7A3146, marfil ≥ 7:1) y el velo inferior lo refuerza. Token en globals.css.
+ * Doble clase: gana a la variante de Degradado sin depender del orden del CSS.
+ */
+.cta.cta {
+  padding-top: calc(var(--espacio-seccion) + 4rem);
+  background-image: var(--grad-cta);
 }
 
-.tituloCurvo {
-  display: block;
-  width: 100%;
-  height: auto;
-
-  text {
-    fill: $rosa;
-    font-family: var(--font-titulo);
-    font-size: 62px;
-    letter-spacing: 0.06em;
-  }
-
-  @include md {
-    text {
-      font-size: 58px;
-    }
-  }
+.contenido {
+  position: relative;
 }
