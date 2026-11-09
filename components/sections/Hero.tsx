@@ -24,6 +24,8 @@ type FotoHero = FuenteImagen & { alt: string; posicion?: string };
  *
  * La entrada es por keyframes de CSS, no JS: el above-the-fold queda visible aunque el JS
  * no cargue. El h1 y el lead solo se desplazan (sin opacity 0) para no retrasar el LCP.
+ * Escalonado corto (0–280 ms, 600 ms de duración): el CTA queda visible antes de ~0.8 s
+ * (PERFORMANCE-MOVIL.md); antes terminaba a 1.06 s.
  */
 export default function Hero({ foto }: { foto?: FotoHero }) {
   const retraso = (ms: number) => ({ animationDelay: `${ms}ms` }) as CSSProperties;
@@ -40,20 +42,20 @@ export default function Hero({ foto }: { foto?: FotoHero }) {
         </p>
 
         <div className={`${styles.titular} flex flex-col items-center gap-5`}>
-          <h1 id="hero-titulo" className={`${styles.desliza} font-titulo text-display text-marfil`} style={retraso(100)}>
+          <h1 id="hero-titulo" className={`${styles.desliza} font-titulo text-display text-marfil`} style={retraso(60)}>
             Tus uñas.
             <br />
             Tu forma
             <br />
             de decirlo.
           </h1>
-          <p className={`${styles.desliza} max-w-[28ch] text-lead text-marfil`} style={retraso(180)}>
+          <p className={`${styles.desliza} max-w-[28ch] text-lead text-marfil`} style={retraso(120)}>
             Estudio privado de uñas artísticas en Manzanillo, Colima.
           </p>
         </div>
 
         <div className={`${styles.cta} flex flex-col items-center gap-4`}>
-          <div className={`${styles.aparece} flex flex-col items-center gap-2 sm:flex-row sm:gap-6`} style={retraso(260)}>
+          <div className={`${styles.aparece} flex flex-col items-center gap-2 sm:flex-row sm:gap-6`} style={retraso(160)}>
             <BotonWhatsApp variante="contorno-marfil" />
             <a
               href="#servicios"
@@ -65,7 +67,7 @@ export default function Hero({ foto }: { foto?: FotoHero }) {
           <a
             href="#sobre-mi"
             className={`${styles.aparece} hidden min-h-11 min-w-11 items-center justify-center text-marfil-75 hover:text-marfil md:inline-flex`}
-            style={retraso(420)}
+            style={retraso(280)}
             aria-label="Ir a la sección Sobre mí"
           >
             <ArrowDown className={`${styles.flecha} size-5`} strokeWidth={1.5} aria-hidden="true" />

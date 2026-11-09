@@ -36,14 +36,14 @@
 // Entrada: opacidad + desplazamiento (logo, CTA, flecha). `both` deja visible el estado final.
 .aparece {
   @include con-movimiento {
-    animation: aparecer 800ms $ease-marca both;
+    animation: aparecer 600ms $ease-marca both;
   }
 }
 
 // Titular y lead: solo desplazamiento, sin opacity 0 (no retrasa el LCP).
 .desliza {
   @include con-movimiento {
-    animation: deslizar 800ms $ease-marca both;
+    animation: deslizar 600ms $ease-marca both;
   }
 }
 
