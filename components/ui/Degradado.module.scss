@@ -13,14 +13,23 @@
 .v04 { background-image: var(--grad-04); }
 .v05 { background-image: var(--grad-05); }
 
-// Variante por imagen (opcional, ver PLAN F1.6). La declaración previa es el respaldo de Safari antiguo.
+// Variante por imagen (`pnpm assets imagenes --con-degradado-03`). Imagen suavizada: el grano lo
+// pone `.grano`. Móvil usa un recorte vertical (girado 90°: rosa arriba, vino abajo) para no
+// bajar 1920 px ni ampliar una franja de 8 % del ancho. El llamador elige el encuadre con
+// `--d03-pos` (y `--d03-size`). La declaración url() previa es el respaldo sin image-set().
 .v03 {
-  background-size: cover;
-  background-position: center;
-  background-image: url("/img/degradado-03-960.webp");
-  background-image: image-set(url("/img/degradado-03-960.avif") type("image/avif"), url("/img/degradado-03-960.webp") type("image/webp"));
+  background-repeat: no-repeat;
+  background-size: var(--d03-size, cover);
+  background-position: var(--d03-pos, center);
+  background-image: url("/img/degradado-03-vertical-720.webp");
+  background-image: image-set(url("/img/degradado-03-vertical-720.avif") type("image/avif"), url("/img/degradado-03-vertical-720.webp") type("image/webp"));
 
-  @include lg {
+  @include md {
+    background-image: url("/img/degradado-03-1280.webp");
+    background-image: image-set(url("/img/degradado-03-1280.avif") type("image/avif"), url("/img/degradado-03-1280.webp") type("image/webp"));
+  }
+
+  @include xl {
     background-image: url("/img/degradado-03-1920.webp");
     background-image: image-set(url("/img/degradado-03-1920.avif") type("image/avif"), url("/img/degradado-03-1920.webp") type("image/webp"));
   }

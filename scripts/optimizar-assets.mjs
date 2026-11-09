@@ -294,10 +294,24 @@ async function imagenes() {
   }
 
   if (process.argv.includes("--con-degradado-03")) {
-    const fuente = `${DEGRADADOS}/Degradado 03.png`;
-    for (const ancho of [960, 1920]) {
-      escribir(`public/img/degradado-03-${ancho}.avif`, await sharp(fuente).resize({ width: ancho }).avif({ quality: 45, effort: 6 }).toBuffer());
-      escribir(`public/img/degradado-03-${ancho}.webp`, await sharp(fuente).resize({ width: ancho }).webp({ quality: 70 }).toBuffer());
+    // Fondo de "Sobre mí" (docs/rebranding/SOBRE-MI-DEGRADADO.md). El PNG trae grano fino que,
+    // codificado, pesa cientos de KB y ampliado por `cover` se ve como manchas: se suaviza aquí y
+    // el grano lo pone CSS (`.grano`), nítido a cualquier DPR y que además tapa el banding.
+    // Horizontal (md+) y vertical (móvil, girado 90° → rosa arriba, vino abajo).
+    const suave = await sharp(`${DEGRADADOS}/Degradado 03.png`)
+      .flatten({ background: "#310913" })
+      .resize({ width: 640 })
+      .blur(2.5)
+      .png()
+      .toBuffer();
+    const variantes = [
+      ["degradado-03-1280", sharp(suave).resize({ width: 1280 })],
+      ["degradado-03-1920", sharp(suave).resize({ width: 1920 })],
+      ["degradado-03-vertical-720", sharp(suave).rotate(90).resize({ width: 720 })],
+    ];
+    for (const [nombre, img] of variantes) {
+      escribir(`public/img/${nombre}.avif`, await img.clone().avif({ quality: 60, effort: 6 }).toBuffer());
+      escribir(`public/img/${nombre}.webp`, await img.clone().webp({ quality: 80 }).toBuffer());
     }
   }
 }

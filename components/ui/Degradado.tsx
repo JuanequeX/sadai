@@ -31,7 +31,8 @@ const CLASE_VARIANTE: Record<VarianteDegradado, string> = {
 
 /**
  * Fondo de degradado de marca (PRD §3.4). 01, 02, 04, 05 y aura son CSS puro (0 bytes);
- * 03 usa imagen y solo funciona si se generó con `pnpm assets imagenes --con-degradado-03`.
+ * 03 usa imagen (vertical en móvil, horizontal desde md) generada con
+ * `pnpm assets imagenes --con-degradado-03`; encuadre por `--d03-pos` del llamador.
  */
 export default function Degradado({
   variante,
