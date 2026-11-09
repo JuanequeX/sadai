@@ -6,6 +6,10 @@ const nextConfig: NextConfig = {
   output: "export",
   // El optimizador de imágenes requiere servidor; con export se sirven tal cual desde public/.
   images: { unoptimized: true },
+  // Source maps del JS de cliente publicados junto a los chunks (`out/_next/static/**/*.js.map`).
+  // El repo es público, así que no se expone nada nuevo; sirven para depurar producción y para
+  // la auditoría "valid-source-maps" de Lighthouse. Ver docs/rebranding/BEST-PRACTICES.md.
+  productionBrowserSourceMaps: true,
 };
 
 export default nextConfig;

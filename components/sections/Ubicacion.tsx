@@ -1,10 +1,11 @@
 import Link from "next/link";
 import { Clock, Map as IconoCroquis, MapPin, Navigation, Phone } from "lucide-react";
 
+import MapaInteractivo from "@/components/ubicacion/MapaInteractivo";
 import Boton from "@/components/ui/Boton";
 import Pill from "@/components/ui/Pill";
 import Reveal from "@/components/ui/Reveal";
-import { mapaEmbedSrc, rutaComoLlegar, site, telefonoHref } from "@/lib/site-config";
+import { rutaComoLlegar, site, telefonoHref } from "@/lib/site-config";
 
 const icono = "size-5";
 
@@ -80,17 +81,8 @@ export default function Ubicacion() {
         </Reveal>
 
         <Reveal delay={0.08} className="lg:col-span-7">
-          {/* Mapa interactivo directo. `loading="lazy"`: Google no carga hasta acercarse a la sección. */}
-          <div className="aspect-[4/3] overflow-hidden rounded-tarjeta border border-rosa-75 bg-vino-80 lg:aspect-[16/11]">
-            <iframe
-              src={mapaEmbedSrc}
-              title={`Mapa interactivo con la ubicación de ${site.marca}`}
-              className="size-full border-0"
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              allowFullScreen
-            />
-          </div>
+          {/* Mapa interactivo: se monta al entrar al viewport (ver MapaInteractivo). */}
+          <MapaInteractivo />
         </Reveal>
       </div>
     </section>
