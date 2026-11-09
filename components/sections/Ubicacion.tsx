@@ -1,83 +1,89 @@
-import { Clock, MapPin, Navigation, Phone } from "lucide-react";
+import Link from "next/link";
+import { Clock, Map as IconoCroquis, MapPin, Navigation, Phone } from "lucide-react";
 
+import MapaInteractivo from "@/components/ubicacion/MapaInteractivo";
+import Boton from "@/components/ui/Boton";
+import Pill from "@/components/ui/Pill";
 import Reveal from "@/components/ui/Reveal";
-import { mapaEmbedSrc, site } from "@/lib/site-config";
+import { rutaComoLlegar, site, telefonoHref } from "@/lib/site-config";
 
-const datos = [
-  { icono: MapPin, titulo: "Dirección", valor: site.direccion },
-  { icono: Clock, titulo: "Horarios", valor: site.horarios },
-  { icono: Phone, titulo: "Teléfono", valor: site.telefonoVisible },
-];
+const icono = "size-5";
 
 export default function Ubicacion() {
+  // La dirección sigue en TODO en site-config: no se inventan datos.
+  const datos = [
+    { Icono: MapPin, titulo: "Dirección", valor: <>{site.direccion}</> },
+    {
+      Icono: Clock,
+      titulo: "Horarios",
+      valor: (
+        <>
+          {site.horarios.map((h) => (
+            <span key={h.dias} className="block">
+              {h.dias} · {h.horas}
+            </span>
+          ))}
+        </>
+      ),
+    },
+    {
+      Icono: Phone,
+      titulo: "Teléfono",
+      valor: (
+        <a href={telefonoHref} className="inline-block py-1 underline-offset-4 hover:underline">
+          {site.telefonoVisible}
+        </a>
+      ),
+    },
+  ];
+
   return (
-    <section id="ubicacion" className="bg-crema px-5 py-20 md:px-10 md:py-28">
-      <div className="mx-auto max-w-6xl">
-        <div className="grid gap-12 lg:grid-cols-[1fr_1.15fr] lg:items-center lg:gap-16">
-          <div>
-            <Reveal>
-              <p className="text-[0.65rem] tracking-[0.3em] text-cacao-suave uppercase">
-                Dónde estamos
-              </p>
-            </Reveal>
+    <section id="ubicacion" aria-labelledby="ubicacion-titulo" className="seccion bg-vino text-marfil">
+      <div className="contenedor grid gap-12 lg:grid-cols-12 lg:items-center lg:gap-x-16">
+        <Reveal className="lg:col-span-5">
+          <Pill tono="oscuro">Dónde estamos</Pill>
+          <h2 id="ubicacion-titulo" className="mt-6 text-h2">
+            Te espero en el estudio.
+          </h2>
+          <p className="mt-4 text-lead text-marfil-75">Atiendo solo con cita: llegas y es tu turno.</p>
 
-            <Reveal delay={0.08}>
-              <h2 className="mt-5 text-3xl leading-[1.15] text-balance text-cacao sm:text-4xl md:text-5xl">
-                Te esperamos en el estudio
-              </h2>
-            </Reveal>
+          <ul className="mt-10 space-y-6">
+            {datos.map(({ Icono, titulo, valor }) => (
+              <li key={titulo} className="flex items-start gap-4">
+                <span className="grid size-11 shrink-0 place-items-center rounded-pill bg-rosa text-vino">
+                  <Icono className={icono} strokeWidth={1.5} aria-hidden="true" />
+                </span>
+                <span>
+                  <span className="block text-etiqueta font-semibold text-marfil-75">{titulo}</span>
+                  <span className="mt-1 block text-cuerpo">{valor}</span>
+                </span>
+              </li>
+            ))}
+          </ul>
 
-            <Reveal delay={0.14}>
-              <p className="mt-5 max-w-md text-base leading-relaxed text-cacao-suave">
-                Atendemos solo con cita para que llegues, entres y sea tu turno
-              </p>
-            </Reveal>
-
-            <Reveal delay={0.2}>
-              <ul className="mt-10 space-y-6">
-                {datos.map(({ icono: Icono, titulo, valor }) => (
-                  <li key={titulo} className="flex items-start gap-4">
-                    <span className="grid size-11 shrink-0 place-items-center rounded-full bg-rosa text-cacao">
-                      <Icono className="size-4" aria-hidden="true" />
-                    </span>
-                    <span>
-                      <span className="block text-[0.6rem] tracking-[0.22em] text-cacao-suave uppercase">
-                        {titulo}
-                      </span>
-                      <span className="mt-1 block text-base text-cacao">
-                        {valor}
-                      </span>
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </Reveal>
-
-            <Reveal delay={0.28}>
-              <a
-                href={site.mapsUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-10 inline-flex items-center gap-2 rounded-full border border-cacao px-7 py-3.5 text-sm font-medium tracking-wide text-cacao uppercase transition-colors duration-300 hover:bg-cacao hover:text-crema"
-              >
-                <Navigation className="size-4" aria-hidden="true" />
-                Cómo llegar
-              </a>
-            </Reveal>
+          <div className="mt-10 flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:gap-6">
+            <Boton
+              href={site.mapsUrl}
+              externo
+              variante="contorno-marfil"
+              icono={<Navigation className={icono} strokeWidth={1.5} aria-hidden="true" />}
+            >
+              Abrir en Google Maps
+            </Boton>
+            <Link
+              href={rutaComoLlegar}
+              className="inline-flex min-h-11 items-center gap-2 text-etiqueta font-semibold text-marfil underline underline-offset-4 hover:no-underline"
+            >
+              <IconoCroquis className={icono} strokeWidth={1.5} aria-hidden="true" />
+              Ver croquis para llegar
+            </Link>
           </div>
+        </Reveal>
 
-          <Reveal delay={0.12}>
-            <div className="overflow-hidden rounded-[2rem] shadow-[0_20px_50px_rgba(62,39,35,0.14)] md:rounded-[2.5rem]">
-              <iframe
-                src={mapaEmbedSrc}
-                title={`Mapa con la ubicación de ${site.nombre}`}
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                className="block h-[320px] w-full border-0 md:h-[460px]"
-              />
-            </div>
-          </Reveal>
-        </div>
+        <Reveal delay={0.08} className="lg:col-span-7">
+          {/* Mapa interactivo: se monta al entrar al viewport (ver MapaInteractivo). */}
+          <MapaInteractivo />
+        </Reveal>
       </div>
     </section>
   );

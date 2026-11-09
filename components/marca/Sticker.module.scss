@@ -1,0 +1,20 @@
+@use "../../styles/tokens" as *;
+
+.sticker {
+  pointer-events: none;
+  user-select: none;
+  height: auto;
+}
+
+@include con-movimiento {
+  .sticker {
+    animation: pop 500ms $ease-marca both;
+  }
+}
+
+@keyframes pop {
+  from {
+    opacity: 0;
+    scale: 0.9;
+  }
+}

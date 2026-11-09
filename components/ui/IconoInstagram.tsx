@@ -1,10 +1,10 @@
 /**
  * lucide-react 1.x ya no incluye iconos de marca, así que el glifo de
- * Instagram va dibujado aquí con el mismo trazo (24x24, stroke 2, redondeado)
+ * Instagram va dibujado aquí con el mismo trazo (24x24, stroke 1.5, redondeado)
  * para que combine con el resto de los iconos.
  */
 export default function IconoInstagram({
-  className = "size-4",
+  className = "size-5",
 }: {
   className?: string;
 }) {
@@ -14,7 +14,7 @@ export default function IconoInstagram({
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      strokeWidth="2"
+      strokeWidth="1.5"
       strokeLinecap="round"
       strokeLinejoin="round"
       aria-hidden="true"

@@ -2,54 +2,48 @@
 
 .hero {
   position: relative;
-  overflow: hidden;
-  background: linear-gradient(
-    170deg,
-    $rosa 0%,
-    $rosa-claro 38%,
-    $crema 78%,
-    $crema 100%
-  );
 }
 
-// Manchas suaves que recuerdan la acuarela del logotipo
-.blobRosa,
-.blobArena {
-  position: absolute;
-  border-radius: 50% 42% 58% 40% / 45% 55% 40% 60%;
-  filter: blur(60px);
-  pointer-events: none;
+/*
+ * Fondo "seda" del hero, inspirado en el Degradado 05 del brand book (tokens en globals.css):
+ * pliegues diagonales de satén malva + grano del componente Degradado. Todo el texto va en
+ * marfil; las capas de sombra oscurecen arriba (navbar transparente) y abajo (CTA), y los
+ * brillos claros quedan en la esquina inferior derecha, fuera de la columna de texto.
+ * Doble clase: gana a .aura de Degradado sin depender del orden del CSS.
+ */
+.panel.panel {
+  min-height: max(40rem, 88svh);
+  background-color: #7e394a;
+  background-image: var(--grad-hero-sombras), var(--grad-hero-pliegues), var(--grad-hero-seda);
+
+  @include lg {
+    min-height: max(40rem, 100svh);
+  }
 }
 
-.blobRosa {
-  top: -12%;
-  right: -18%;
-  width: 60vw;
-  height: 60vw;
-  max-width: 620px;
-  max-height: 620px;
-  background-color: rgba(244, 201, 214, 0.85);
+// El titular nunca baja de 16rem desde el borde inferior: .cta mide al menos 10rem
+// (contenido + padding inferior) y este margen cubre la transición del degradado.
+.titular {
+  margin-bottom: 4rem; // 10rem (.cta) + 2rem (gap) + 4rem = 16rem
 }
 
-.blobArena {
-  bottom: -22%;
-  left: -20%;
-  width: 55vw;
-  height: 55vw;
-  max-width: 540px;
-  max-height: 540px;
-  background-color: rgba(220, 207, 192, 0.7);
+.cta {
+  padding-bottom: 2.5rem;
+  min-height: 10rem;
+  justify-content: flex-end;
 }
 
-// Entrada en CSS: si el JS no corre, `forwards` deja igual el estado final visible
+// Entrada: opacidad + desplazamiento (logo, CTA, flecha). `both` deja visible el estado final.
 .aparece {
-  opacity: 0;
-  animation: aparecer 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  @include con-movimiento {
+    animation: aparecer 600ms $ease-marca both;
+  }
+}
 
-  @include sin-movimiento {
-    animation-duration: 0.2s;
-    animation-delay: 0s !important;
-    animation-name: aparecer-simple;
+// Titular y lead: solo desplazamiento, sin opacity 0 (no retrasa el LCP).
+.desliza {
+  @include con-movimiento {
+    animation: deslizar 600ms $ease-marca both;
   }
 }
 
@@ -58,37 +52,22 @@
     opacity: 0;
     transform: translateY(24px);
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
-// Sin desplazamiento, solo el fundido
-@keyframes aparecer-simple {
-  to {
-    opacity: 1;
+@keyframes deslizar {
+  from {
+    transform: translateY(24px);
   }
 }
 
 .flecha {
-  width: 1.25rem;
-  height: 1.25rem;
-  animation: flotar 2.4s ease-in-out infinite;
-
-  @include sin-movimiento {
-    animation: none;
+  @include con-movimiento {
+    animation: flotar 2.4s ease-in-out infinite;
   }
 }
 
 @keyframes flotar {
-  0%,
-  100% {
-    transform: translateY(0);
-    opacity: 0.55;
-  }
   50% {
-    transform: translateY(7px);
-    opacity: 1;
+    transform: translateY(6px);
   }
 }

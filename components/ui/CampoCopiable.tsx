@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 import BotonCopiar from "@/components/ui/BotonCopiar";
 
@@ -22,6 +22,7 @@ export default function CampoCopiable({
   mostrado,
 }: CampoCopiableProps) {
   const valorRef = useRef<HTMLSpanElement>(null);
+  const [copiado, setCopiado] = useState(false);
 
   // Respaldo cuando no hay portapapeles: dejar el valor seleccionado para
   // poder copiarlo a mano.
@@ -36,7 +37,7 @@ export default function CampoCopiable({
   };
 
   return (
-    <div className={styles.campo}>
+    <div className={styles.campo} data-copiado={copiado ? "" : undefined}>
       <p className={styles.etiqueta}>{etiqueta}</p>
 
       <div className={styles.fila}>
@@ -44,7 +45,7 @@ export default function CampoCopiable({
           {mostrado ?? valor}
         </span>
 
-        <BotonCopiar valor={valor} etiqueta={etiqueta} alFallar={seleccionar} />
+        <BotonCopiar valor={valor} etiqueta={etiqueta} alFallar={seleccionar} alCopiar={setCopiado} />
       </div>
     </div>
   );

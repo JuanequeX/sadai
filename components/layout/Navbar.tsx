@@ -1,28 +1,45 @@
-import { useEffect, useState } from "react";
-import Image from "next/image";
+import { useEffect, useRef, useState, type Ref } from "react";
 import Link from "next/link";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { useRouter } from "next/router";
+import { Phone } from "lucide-react";
 
+import Logotipo from "@/components/marca/Logotipo";
+import SimboloS from "@/components/marca/SimboloS";
 import BotonWhatsApp from "@/components/ui/BotonWhatsApp";
-import { navLinks, site } from "@/lib/site-config";
+import { ALTURA_NAVBAR_PX } from "@/lib/layout";
+import { navLinks, site, telefonoHref, type EnlaceNav } from "@/lib/site-config";
 
 import styles from "./Navbar.module.scss";
 
 /**
- * Altura del navbar fijo: la línea bajo la que se decide qué sección se está
- * viendo. Coincide con el scroll-padding-top de globals.css, así que al llegar
- * por un anchor la sección queda activa exactamente al terminar el salto.
+ * Línea bajo la que se decide qué sección se está viendo: la altura del navbar fijo,
+ * igual que el scroll-padding-top de globals.css. Al llegar por un ancla la sección
+ * queda activa exactamente al terminar el salto.
  */
-const LINEA_ACTIVA = 88;
+const LINEA_ACTIVA = ALTURA_NAVBAR_PX;
 
-export default function Navbar() {
-  const [abierto, setAbierto] = useState(false);
+/**
+ * Tono del navbar arriba del todo (antes de pasar 40 px), según el primer bloque de cada ruta:
+ * - "/": hero "seda" malva oscuro → transparente con texto marfil.
+ * - "/404": base vino del degradado → transparente con texto marfil.
+ * - resto: fondo marfil con texto vino desde el inicio.
+ */
+const TONO_INICIAL: Record<string, "vino" | "marfil"> = { "/": "marfil", "/404": "marfil" };
+
+export default function Navbar({ alCambiarMenu }: { alCambiarMenu?: (abierto: boolean) => void }) {
+  const { pathname } = useRouter();
+  const [abierto, setAbiertoEstado] = useState(false);
   const [conFondo, setConFondo] = useState(false);
   const [activa, setActiva] = useState<string | null>(null);
-  const sinMovimiento = useReducedMotion();
+  const botonRef = useRef<HTMLButtonElement>(null);
+  const primerEnlaceRef = useRef<HTMLAnchorElement>(null);
 
-  // El navbar es transparente sobre el hero y gana fondo al bajar; de paso
-  // resuelve qué sección se está viendo, para no medir el layout dos veces.
+  const setAbierto = (valor: boolean) => {
+    setAbiertoEstado(valor);
+    alCambiarMenu?.(valor);
+  };
+
+  // Fondo al pasar 40 px y sección activa, midiendo una sola vez por frame.
   useEffect(() => {
     let pendiente = false;
 
@@ -35,21 +52,20 @@ export default function Navbar() {
       let masCercana: string | null = null;
       let mejorTop = -Infinity;
       for (const link of navLinks) {
-        // `ancla`, no `href`: el href lleva "/" delante y no es un selector válido
+        // `ancla`, no `href`: el href lleva "/" delante y no es un selector válido.
+        // Las páginas propias (sin ancla) se marcan activas por ruta, no por scroll.
+        if (!link.ancla) continue;
         const seccion = document.querySelector(link.ancla);
         if (!seccion) continue;
         const { top } = seccion.getBoundingClientRect();
-        if (top <= LINEA_ACTIVA && top > mejorTop) {
+        if (top <= LINEA_ACTIVA + 1 && top > mejorTop) {
           mejorTop = top;
           masCercana = link.ancla;
         }
       }
-      // Arriba del todo (hero) no hay ninguna activa, y así queda
       setActiva(masCercana);
     };
 
-    // Leer el layout en cada evento de scroll provoca thrashing; una vez por
-    // frame basta y sobra para un subrayado.
     const alHacerScroll = () => {
       if (pendiente) return;
       pendiente = true;
@@ -63,177 +79,164 @@ export default function Navbar() {
       window.removeEventListener("scroll", alHacerScroll);
       window.removeEventListener("resize", alHacerScroll);
     };
-  }, []);
+  }, [pathname]);
 
-  // Con el menú abierto: bloquea el scroll del body y escucha Esc
+  // Con el menú abierto: bloquea el scroll del body, escucha Esc y enfoca el primer enlace.
   useEffect(() => {
     if (!abierto) return;
 
     const alPresionar = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setAbierto(false);
+      if (e.key !== "Escape") return;
+      setAbiertoEstado(false);
+      alCambiarMenu?.(false);
+      botonRef.current?.focus();
     };
     const overflowPrevio = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     window.addEventListener("keydown", alPresionar);
+    primerEnlaceRef.current?.focus();
 
     return () => {
       document.body.style.overflow = overflowPrevio;
       window.removeEventListener("keydown", alPresionar);
     };
-  }, [abierto]);
+  }, [abierto, alCambiarMenu]);
 
-  const barra = (i: number) => {
-    const activo = abierto;
-    return {
-      initial: false,
-      animate: {
-        rotate: activo ? (i === 0 ? 45 : i === 2 ? -45 : 0) : 0,
-        y: activo ? (i === 0 ? 7 : i === 2 ? -7 : 0) : 0,
-        opacity: activo && i === 1 ? 0 : 1,
-      },
-      transition: { duration: sinMovimiento ? 0 : 0.3, ease: "easeInOut" },
-    } as const;
+  const tonoInicial = TONO_INICIAL[pathname];
+  /** Activo: por sección a la vista (anclas del home) o por ruta (páginas propias). */
+  const esActivo = (link: EnlaceNav) => (link.ancla ? activa === link.ancla : pathname === link.href);
+  const transparente = abierto || (tonoInicial !== undefined && !conFondo);
+  const tonoClaro = abierto || (tonoInicial === "marfil" && !conFondo);
+  // En el home, arriba del todo, el hero ya muestra el logotipo grande.
+  const logoOculto = pathname === "/" && !conFondo && !abierto;
+
+  const alternar = () => {
+    const siguiente = !abierto;
+    setAbierto(siguiente);
+    if (!siguiente) botonRef.current?.focus();
   };
+
+  // Al elegir un enlace se cierra sin mover el foco: el navegador lo lleva al ancla.
+  const cerrar = () => setAbierto(false);
 
   return (
     <>
       <header
-        className={`fixed inset-x-0 top-0 z-50 transition-colors duration-500 ${
-          // Con el menú abierto se deja transparente para fundirse con el overlay rosa
-          conFondo && !abierto
-            ? "bg-crema/95 shadow-[0_1px_20px_rgba(62,39,35,0.08)] backdrop-blur"
-            : "bg-transparent"
+        className={`fixed inset-x-0 top-0 z-50 h-[var(--altura-navbar)] transition-colors duration-200 ${
+          transparente
+            ? `border-b border-transparent bg-transparent ${tonoClaro ? "text-marfil" : "text-vino"}`
+            : "border-b border-linea bg-marfil/95 text-vino backdrop-blur"
         }`}
       >
-        <nav
-          className="mx-auto flex max-w-7xl items-center justify-between px-5 py-3.5 md:px-10"
-          aria-label="Navegación principal"
-        >
+        <nav aria-label="Navegación principal" className="contenedor flex h-full items-center justify-between gap-4">
           <Link
             href="/"
-            className="flex items-center gap-2.5"
-            aria-label={`${site.nombre} — inicio`}
+            aria-label={`${site.marca}, inicio`}
+            tabIndex={logoOculto ? -1 : undefined}
+            aria-hidden={logoOculto || undefined}
+            className={`shrink-0 transition-opacity duration-200 ${logoOculto ? "pointer-events-none opacity-0" : "opacity-100"}`}
           >
-            <Image
-              src="/logo-sadai.png"
-              alt=""
-              width={44}
-              height={44}
-              priority
-              className="size-10 rounded-full object-cover md:size-11"
-            />
-            <span className="leading-none">
-              <span className="block font-firma text-xl text-cacao md:text-2xl">
-                Sadai
-              </span>
-              <span className="block text-[0.55rem] tracking-[0.28em] text-cacao-suave uppercase">
-                Artistic Nails
-              </span>
-            </span>
+            <Logotipo className="h-auto w-[130px] lg:w-[150px]" />
           </Link>
 
-          <ul className="hidden items-center gap-9 md:flex">
+          <ul className="hidden gap-10 lg:flex">
             {navLinks.map((link) => (
               <li key={link.href}>
-                <a
-                  href={link.href}
-                  className={`${styles.enlace} ${
-                    activa === link.ancla ? styles.activo : ""
-                  }`}
-                  aria-current={activa === link.ancla ? "true" : undefined}
-                >
-                  {link.label}
-                </a>
+                <EnlaceMenu
+                  enlace={link}
+                  className={`${styles.enlace} ${esActivo(link) ? styles.activo : ""}`}
+                  aria-current={esActivo(link) ? (link.ancla ? "true" : "page") : undefined}
+                />
               </li>
             ))}
           </ul>
 
-          <div className="hidden md:block">
-            <BotonWhatsApp className="px-6 py-2.5 text-xs" icono="ninguno" />
+          <div className="hidden lg:block">
+            <BotonWhatsApp
+              variante={tonoClaro ? "contorno-marfil" : transparente ? "contorno-vino" : "vino"}
+              icono="ninguno"
+            />
           </div>
 
           <button
+            ref={botonRef}
             type="button"
-            onClick={() => setAbierto((v) => !v)}
+            onClick={alternar}
             className={styles.hamburguesa}
+            data-abierto={abierto || undefined}
             aria-label={abierto ? "Cerrar menú" : "Abrir menú"}
             aria-expanded={abierto}
             aria-controls="menu-movil"
           >
-            {[0, 1, 2].map((i) => (
-              <motion.span key={i} {...barra(i)} />
-            ))}
+            <span />
+            <span />
+            <span />
           </button>
         </nav>
       </header>
 
-      <AnimatePresence>
-        {abierto ? (
-          <motion.div
-            id="menu-movil"
-            className="fixed inset-0 z-40 flex flex-col justify-center bg-rosa px-8 pt-20 md:hidden"
-            initial={{ x: sinMovimiento ? 0 : "100%", opacity: sinMovimiento ? 0 : 1 }}
-            animate={{ x: 0, opacity: 1 }}
-            exit={{ x: sinMovimiento ? 0 : "100%", opacity: sinMovimiento ? 0 : 1 }}
-            transition={{ duration: sinMovimiento ? 0.2 : 0.45, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <ul className="flex flex-col gap-7">
-              {navLinks.map((link, i) => (
-                <motion.li
-                  key={link.href}
-                  initial={{ opacity: 0, y: sinMovimiento ? 0 : 16 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{
-                    delay: sinMovimiento ? 0 : 0.16 + i * 0.08,
-                    duration: 0.4,
-                  }}
-                >
-                  <a
-                    href={link.href}
-                    onClick={() => setAbierto(false)}
-                    className="font-titulo text-4xl text-cacao"
-                  >
-                    {link.label}
-                  </a>
-                </motion.li>
-              ))}
-            </ul>
+      {/* Patrón disclosure (no dialog): el botón de cierre vive en el header. */}
+      <div
+        id="menu-movil"
+        inert={!abierto}
+        data-abierto={abierto || undefined}
+        className={`${styles.menuMovil} fixed inset-0 z-40 overflow-y-auto bg-vino text-marfil lg:hidden`}
+      >
+        <div className="contenedor flex min-h-full flex-col pt-[var(--altura-navbar)]">
+          <ul className="mt-6 flex flex-col gap-4">
+            {navLinks.map((link, i) => (
+              <li key={link.href}>
+                <EnlaceMenu
+                  ref={i === 0 ? primerEnlaceRef : undefined}
+                  enlace={link}
+                  onClick={cerrar}
+                  className="inline-flex min-h-11 items-center font-titulo text-h3"
+                  aria-current={esActivo(link) ? (link.ancla ? "true" : "page") : undefined}
+                />
+              </li>
+            ))}
+          </ul>
 
-            {/*
-              Fuera de la lista de anclas y en un cuerpo menor: no es otra
-              sección del home sino otra página, y conviene que se lea así.
-              Solo vive aquí — ni en el menú de escritorio, ni en el pie, ni en
-              el home—, porque es un enlace que se comparte al cobrar.
-            */}
-            <motion.div
-              className="mt-9 border-t border-cacao/15 pt-6"
-              initial={{ opacity: 0, y: sinMovimiento ? 0 : 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: sinMovimiento ? 0 : 0.4, duration: 0.4 }}
-            >
-              <Link
-                href="/datos-bancarios"
-                onClick={() => setAbierto(false)}
-                className="text-sm tracking-[0.16em] text-cacao uppercase"
-              >
-                Datos bancarios
-              </Link>
-            </motion.div>
+          <div className="mt-8 flex flex-col items-start gap-4 border-t border-linea-clara pt-6">
+            <BotonWhatsApp variante="marfil" />
+            <a href={telefonoHref} className="inline-flex min-h-11 items-center gap-2 text-pequeno text-marfil-75 hover:text-marfil">
+              <Phone className="size-5" strokeWidth={1.5} aria-hidden="true" />
+              {site.telefonoVisible}
+            </a>
+          </div>
 
-            <motion.div
-              className="mt-10"
-              initial={{ opacity: 0, y: sinMovimiento ? 0 : 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: sinMovimiento ? 0 : 0.48, duration: 0.4 }}
-            >
-              <BotonWhatsApp />
-              <p className="mt-8 text-xs tracking-[0.2em] text-cacao-suave uppercase">
-                {site.telefonoVisible}
-              </p>
-            </motion.div>
-          </motion.div>
-        ) : null}
-      </AnimatePresence>
+          <SimboloS className="mt-auto mb-10 h-auto w-[96px] self-center pt-10 text-rosa" />
+        </div>
+      </div>
     </>
+  );
+}
+
+/**
+ * Enlace del menú: las secciones del home van con <a> (fragmento en el mismo documento, conserva
+ * el scroll suave); las páginas propias con <Link> (navegación de cliente).
+ */
+function EnlaceMenu({
+  enlace,
+  ref,
+  ...resto
+}: {
+  enlace: EnlaceNav;
+  ref?: Ref<HTMLAnchorElement>;
+  className?: string;
+  onClick?: () => void;
+  "aria-current"?: "true" | "page";
+}) {
+  if (enlace.ancla) {
+    return (
+      <a ref={ref} href={enlace.href} {...resto}>
+        {enlace.label}
+      </a>
+    );
+  }
+  return (
+    <Link ref={ref} href={enlace.href} {...resto}>
+      {enlace.label}
+    </Link>
   );
 }

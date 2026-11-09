@@ -1,20 +1,23 @@
 @use "../../styles/tokens" as *;
 
 .banda {
+  position: relative;
+  display: flex;
+  align-items: center;
   overflow: hidden;
-  background-color: $cacao;
-  color: $crema;
-  padding-block: 0.75rem;
+  min-height: 4.5rem;
+  background-color: $vino;
+  color: $rosa;
+  border-block: 1px solid $linea-clara;
   user-select: none;
 
   @include md {
-    padding-block: 1rem;
+    min-height: 6rem;
   }
 }
 
 .pista {
-  // Respaldo por si falta el estilo en línea; el componente lo sobrescribe con
-  // -100% / copias en cuanto mide cuántas hacen falta.
+  // Respaldo por si falta el estilo en línea; el componente lo ajusta a -100% / copias.
   --desplazamiento: -16.6667%;
 
   display: flex;
@@ -29,6 +32,13 @@
   }
 }
 
+// Una sola fuente de verdad: el estado `pausado` del componente (data-pausado). Sin pausas
+// por :hover ni :focus-within: el botón conserva el foco tras el clic y dejaba la banda
+// detenida aunque el estado dijera "reproducir".
+.banda[data-pausado] .pista {
+  animation-play-state: paused;
+}
+
 .grupo {
   display: flex;
   align-items: center;
@@ -40,31 +50,48 @@
     display: flex;
     align-items: center;
     white-space: nowrap;
-    font-size: 0.7rem;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-
-    @include md {
-      font-size: 0.8rem;
-    }
+    font-family: var(--font-titulo);
+    font-size: var(--text-h3);
+    line-height: 1.1;
   }
 }
 
-.punto {
-  display: inline-block;
-  width: 5px;
-  height: 5px;
+.separador {
+  display: inline-flex;
   margin-inline: 1.75rem;
-  border-radius: 9999px;
-  background-color: $rosa;
 
   @include md {
     margin-inline: 2.5rem;
   }
 }
 
-// El desplazamiento es el ancho exacto de una copia, así que al cerrar el ciclo
-// la pista queda igual que al empezar y el salto no se ve.
+.pausa {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  translate: 0 -50%;
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  margin-right: var(--gutter);
+  color: $rosa;
+  background-color: $vino;
+  border: 1px solid $linea-clara;
+  border-radius: $radio-pill;
+  cursor: pointer;
+
+  &:hover {
+    border-color: $rosa;
+  }
+
+  @include sin-movimiento {
+    display: none;
+  }
+}
+
+// El desplazamiento es el ancho exacto de una copia: al cerrar el ciclo la pista
+// queda igual que al empezar y el salto no se ve.
 @keyframes desplazar {
   from {
     transform: translateX(0);

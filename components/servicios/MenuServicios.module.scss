@@ -1,0 +1,50 @@
+@use "../../styles/tokens" as *;
+
+// Solo el panel activo ocupa espacio: el alto se adapta a cada categoría (Pies y Retiros no
+// heredan el hueco de Manos). El cambio lo provoca un toque del usuario, así que no cuenta
+// como CLS; las notas de desktop son sticky y no dependen de este alto.
+.panel {
+  display: none;
+
+  &[data-activo] {
+    display: block;
+
+    @include con-movimiento {
+      animation: entrar 200ms $ease-marca;
+    }
+  }
+}
+
+// Satén vino detrás de la tarjeta de servicios (Degradado 02). Vive en la caja de los paneles,
+// así su alto sigue al de la categoría activa: con 3 servicios no queda un borrón aplastado.
+// z-index -2: debajo del grano de la sección (-1) y encima de su fondo (contexto `isolate`).
+// No sube hasta las pestañas (texto vino) ni entra en la columna de notas.
+.halo {
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    z-index: -2;
+    top: 1.5rem;
+    bottom: -4.5rem;
+    left: -40vw;
+    right: 6%;
+    pointer-events: none;
+    background-image: var(--grad-servicios-halo);
+  }
+}
+
+@keyframes entrar {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+// Tarjeta de cotización: --grad-01 oscurecido (token --grad-cotizacion en globals.css) para que
+// el marfil cumpla ≥ 4.5:1 en todo el bloque (el claro original daba ≈ 3.5:1).
+// Doble clase: gana a .v01 de Degradado.
+.cotizacion.cotizacion {
+  background-image: var(--grad-cotizacion);
+}

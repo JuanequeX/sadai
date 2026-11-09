@@ -1,40 +1,57 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
+# Sadai — sitio web
 
-## Getting Started
+Landing de Sadai, estudio de uñas artísticas en Manzanillo, Colima. Next.js 16 (Pages Router),
+React 19, Tailwind v4 + SCSS modules. Se publica como export estático en GitHub Pages
+(`output: "export"`, `public/CNAME` = `sadai.mx`; ver `.github/workflows/deploy.yml`).
 
-First, run the development server:
+## Desarrollo
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm install
+pnpm dev     # http://localhost:3000
+pnpm lint
+pnpm build   # genera out/ (con webpack; ver nota abajo)
+pnpm dlx serve out   # sirve el export como GitHub Pages
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+`pnpm dev` usa Turbopack (el default de Next 16) y `pnpm build` usa webpack (`next build --webpack`,
+opción documentada por Next). Con Pages Router, Turbopack duplica React y su runtime entre el chunk
+de `_app` y el de cada página; webpack los deduplica y la home baja ~16 KB gzip de JS. Detalle y
+mediciones en `docs/rebranding/LIGHTHOUSE.md`.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+## Identidad y datos
 
-[API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+- Tokens de color, tipografía y degradados: `styles/globals.css` (`@theme` y `:root`), con espejo
+  SCSS en `styles/_tokens.scss`. No se agregan colores fuera de la paleta del brand book.
+- Fuentes: solo en `lib/fonts.ts` (Established local + Plus Jakarta Sans vía `next/font/google`).
+- Datos del negocio: `lib/site-config.ts`. Menú de servicios y precios: `lib/menu-servicios.ts`.
+- Diseño de referencia: `docs/rebranding/PRD.md`.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) instead of React pages.
+## Assets de marca
 
-This project uses [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Los logotipos, recursos, stickers, íconos, imágenes y la imagen OG se generan desde el brand book
+con `scripts/optimizar-assets.mjs` (sharp + svgo). Las salidas se commitean; el brand book no.
 
-## Learn More
+Requisitos: `docs/brand-identity/` presente en local (≈ 450 MB, ignorado por git) y el retrato
+original en `assets/fuente/sadai-retrato.png`.
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+pnpm assets todo                 # o: logos | recursos | stickers | iconos | imagenes | og
+pnpm assets imagenes --con-degradado-03   # opcional: variante por imagen del Degradado 03
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn-pages-router) - an interactive Next.js tutorial.
+- `REGISTRADA` (al inicio del script) elige versiones con o sin ®. Hoy `false`: sin ®, y por eso
+  no se publican los stickers 04/05, que traen el ® integrado.
+- Los componentes de `components/marca/` llevan la cabecera "Generado por…": no editarlos a mano.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+La fuente de títulos (Established, licencia web confirmada por el cliente) se recorta aparte con
+fontTools vía `uvx` (el zip se extrae fuera del repo):
 
-## Deploy on Vercel
+```bash
+uvx --from 'fonttools[woff]' pyftsubset /ruta/a/OpenType-PS/Established.otf \
+  --unicodes="U+0020-007E,U+00A0-00FF,U+0152-0153,U+2018-201A,U+201C-201E,U+2022,U+2026,U+20AC" \
+  --layout-features="kern,liga,dlig" --name-IDs="0,1,2,3,4,5,6,7,13,14" \
+  --flavor=woff2 --output-file=styles/fonts/Established-Regular.woff2
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.
+Established no tiene `¿ ¡ · – — …`: evitarlos en títulos.

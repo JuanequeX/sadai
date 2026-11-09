@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Brand book y assets fuente de la diseñadora (~450 MB): solo locales
+/docs/brand-identity/

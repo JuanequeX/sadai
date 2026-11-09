@@ -1,59 +1,138 @@
 @import "tailwindcss";
 
-/*
- * Paleta de marca — jerarquía definida por el estudio.
- * Los mismos hex viven en styles/_tokens.scss para los SCSS modules.
- */
+/* Paleta oficial (PRD §3.1). Espejo en styles/_tokens.scss. Prohibido agregar colores fuera de aquí. */
 @theme {
-  --color-rosa: #f4c9d6;
-  --color-cacao: #3e2723;
-  --color-arena: #dccfc0;
-  --color-crema: #f7e4d7;
+  --color-*: initial; /* elimina la paleta por defecto de Tailwind: ningún color fuera de marca */
+  --color-vino: #440019;
+  --color-rosa: #ffb3c3;
+  --color-marfil: #f9f8f4;
+  --color-vino-hover: #5a1e33;
+  --color-vino-80: #683245;
+  --color-vino-70: #7a4a5b;
+  --color-rosa-claro: #ffe1e7;
+  --color-marfil-75: #ccbabd;
+  --color-rosa-75: #d08698;
+  --color-linea: rgb(68 0 25 / 0.35);
+  --color-linea-clara: rgb(249 248 244 / 0.4);
 
-  /* Variantes derivadas, para hovers y capas suaves */
-  --color-rosa-claro: #fbe6ed;
-  --color-cacao-suave: #5b423c;
-
-  --font-titulo: var(--fuente-titulo), Georgia, serif;
+  --font-titulo: var(--fuente-titulo), "Times New Roman", Georgia, serif;
   --font-cuerpo: var(--fuente-cuerpo), system-ui, sans-serif;
-  --font-firma: var(--fuente-firma), cursive;
+
+  /* Escala tipográfica (PRD §3.2) → utilidades text-display, text-h2, … */
+  --text-display: clamp(3rem, 1.8rem + 5.6vw, 6.5rem);
+  --text-display--line-height: 0.98;
+  --text-display--letter-spacing: -0.01em;
+  --text-h2: clamp(2.5rem, 1.7rem + 3.6vw, 4.5rem);
+  --text-h2--line-height: 1.02;
+  --text-h2--letter-spacing: -0.005em;
+  --text-h3: clamp(1.75rem, 1.4rem + 1.5vw, 2.5rem);
+  --text-h3--line-height: 1.08;
+  --text-subtitulo: clamp(1.25rem, 1.05rem + 0.9vw, 1.875rem);
+  --text-subtitulo--line-height: 1.15;
+  --text-subtitulo--letter-spacing: -0.015em;
+  --text-lead: clamp(1.0625rem, 1rem + 0.35vw, 1.25rem);
+  --text-lead--line-height: 1.55;
+  --text-cuerpo: 1rem;
+  --text-cuerpo--line-height: 1.65;
+  --text-menu: clamp(1rem, 0.95rem + 0.3vw, 1.125rem);
+  --text-menu--line-height: 1.4;
+  --text-etiqueta: 0.8125rem;
+  --text-etiqueta--line-height: 1.2;
+  --text-etiqueta--letter-spacing: 0.02em;
+  --text-pequeno: 0.875rem;
+  --text-pequeno--line-height: 1.5;
+  --text-legal: 0.75rem;
+  --text-legal--line-height: 1.5;
+
+  --radius-pill: 999px;
+  --radius-tarjeta: 1.5rem;
+  --ease-marca: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 @layer base {
-  html {
-    scroll-behavior: smooth;
-    /* Compensa el navbar fijo al saltar a un anchor */
-    scroll-padding-top: 5.5rem;
-  }
+  :root {
+    /* Navbar: el logotipo mide 130 px en móvil y 150 px en desktop (≈ 52 px de alto; por debajo del mínimo de 220 px del PRD §3.3, a pedido del cliente) + ~10 px arriba y abajo.
+       Espejo en lib/layout.ts (ALTURA_NAVBAR_PX). */
+    --altura-navbar: 4.5rem;
+    --espacio-seccion: clamp(4.5rem, 3rem + 6vw, 9rem);
+    --gutter: 1rem;
 
-  body {
-    background-color: var(--color-crema);
-    color: var(--color-cacao);
-    font-family: var(--font-cuerpo);
-    -webkit-font-smoothing: antialiased;
+    /* Degradados de marca (PRD §3.4) */
+    --grad-01: radial-gradient(ellipse 60% 70% at 12% 88%, #5e1427 0%, transparent 70%), radial-gradient(ellipse 55% 60% at 95% 5%, #d896a3 0%, transparent 70%), linear-gradient(135deg, #7c3647 0%, #9d5a68 55%, #b4717e 100%);
+    --grad-02: radial-gradient(ellipse 70% 85% at 98% 45%, #f2b2bf 0%, #d896a5 30%, transparent 65%), radial-gradient(ellipse 120% 40% at 40% 70%, rgb(222 158 171 / 0.35) 0%, transparent 60%), linear-gradient(110deg, #5b1224 0%, #70283b 35%, #a35e6e 62%, #d896a5 100%);
+    --grad-04: radial-gradient(ellipse 45% 50% at 48% 52%, #db9ba8 0%, #c58592 35%, transparent 72%), linear-gradient(180deg, #b3737f 0%, #a96773 40%, #7a3146 82%, #63192c 100%);
+    --grad-05: linear-gradient(120deg, #914d5e 0%, #b47380 28%, #c98995 48%, #a15c69 68%, #d999a5 100%);
+    --grad-aura: radial-gradient(circle at 50% 50%, #f4a9ba 0%, #e8a0b2 16%, #8c3a52 34%, #5a1a2e 46%, transparent 62%), linear-gradient(180deg, #ffb3c3 0%, #f2a9bb 30%, #b8687d 62%, #440019 100%);
+    /* Ajustes locales de degradados para contraste de texto (PLAN F4.2, F4.5, F4.7). Solo tonos
+       muestreados de los degradados oficiales. Paradas en rem desde el borde donde va el texto
+       para que el contraste no dependa del alto del viewport. */
+    /* Hero "seda" (inspirado en Degradado 05: pliegues diagonales de satén malva, tonos
+       muestreados del PNG oficial). Texto en marfil: los tonos que cruzan la columna central
+       no pasan de ~#94505f (marfil ≥ 4.5:1); los brillos claros solo viven en la esquina
+       inferior derecha, lejos del texto, y la base y el borde superior se oscurecen hacia vino
+       para el CTA y el navbar transparente. */
+    --grad-hero-sombras: linear-gradient(to top, rgb(68 0 25 / 0.5) 0rem, rgb(68 0 25 / 0) 12rem), linear-gradient(to bottom, rgb(68 0 25 / 0.4) 0rem, rgb(68 0 25 / 0) 9rem);
+    --grad-hero-pliegues: radial-gradient(ellipse 34% 30% at 100% 100%, rgb(222 147 163 / 0.7) 0%, rgb(204 130 146 / 0.3) 45%, transparent 100%), linear-gradient(125deg, transparent 60%, rgb(108 38 56 / 0.55) 73%, transparent 86%), linear-gradient(125deg, transparent 28%, rgb(168 97 113 / 0.3) 43%, transparent 58%), linear-gradient(125deg, transparent 8%, rgb(118 50 67 / 0.35) 18%, transparent 30%);
+    --grad-hero-seda: linear-gradient(125deg, #6f2c3e 0%, #833e4f 22%, #8f4959 42%, #8a4455 58%, #742f41 78%, #8a4555 90%, #a25b6b 100%);
+    --grad-cta: radial-gradient(ellipse 70% 9rem at 50% 0%, rgb(219 155 168 / 0.85) 0%, rgb(197 133 146 / 0.45) 40%, transparent 100%), linear-gradient(180deg, #a96773 0rem, #7a3146 4rem, #63192c 60%, #440019 100%);
+    --grad-cotizacion: radial-gradient(ellipse 60% 70% at 12% 88%, #5e1427 0%, transparent 70%), linear-gradient(135deg, #5e1427 0%, #7c3647 55%, #9d5a68 100%);
+    /* Servicios (Degradado 02 reencuadrado, docs/rebranding/SERVICIOS-DEGRADADO.md). Tonos
+       muestreados del PNG oficial. Capas por zonas con paradas en rem desde el borde superior
+       (encabezado, notas y pestañas: rosa claro, texto vino) y desde el inferior (cotización),
+       así el encuadre no depende del alto de la pestaña activa. El satén vino del 02 vive
+       entre ambas zonas, detrás de la tarjeta marfil. Móvil/tablet: columna única. */
+    --grad-servicios:
+      radial-gradient(ellipse 70% 20rem at 0% 0%, rgb(195 122 138 / 0.75) 0%, rgb(195 122 138 / 0) 100%),
+      radial-gradient(ellipse 80% 24rem at 100% 28rem, rgb(247 180 196 / 0.8) 0%, rgb(247 180 196 / 0) 100%),
+      linear-gradient(to bottom, #eda3b3 0rem, #e59cab 12rem, #dc91a1 26rem, #d48a9a 40rem, #cd8494 53rem, rgb(205 132 148 / 0) 62rem),
+      linear-gradient(to top, #dd92a2 0rem, #d18796 12rem, #c98090 24rem, rgb(201 128 144 / 0) 33rem),
+      linear-gradient(to bottom, #d48a9a 0%, #c98090 50%, #d18796 100%);
+    /* lg+: el 02 en horizontal. Vino a la izquierda (columna de la tarjeta) con un pliegue de
+       satén en arco (--grad-servicios-halo, anclado a la tarjeta en MenuServicios.module.scss);
+       brillo rosa a la derecha (notas) y rosa arriba (encabezado y pestañas) y abajo (cotización). */
+    --grad-servicios-lg:
+      radial-gradient(ellipse 40% 24rem at 0% 0%, rgb(195 122 138 / 0.8) 0%, rgb(195 122 138 / 0) 100%),
+      linear-gradient(to bottom, #f2a8b8 0rem, #e59cab 14rem, #da90a0 26rem, #d18796 32rem, rgb(209 135 150 / 0) 39rem),
+      linear-gradient(to top, #e29aa9 0rem, #d48a9a 16rem, #cd8494 26rem, rgb(205 132 148 / 0) 34rem),
+      radial-gradient(ellipse 40% 45% at 88% 50%, #f7b4c4 0%, rgb(244 171 187 / 0) 100%),
+      linear-gradient(105deg, #c37a8a 0%, #d68c9c 40%, #eda3b3 72%, #f4abbb 88%, #e99dad 100%);
+    /* Satén vino del 02 anclado a la tarjeta de servicios (no a la sección): `closest-side`
+       lo escala con la caja del halo, así conserva su forma con 3 o 7 servicios. */
+    --grad-servicios-halo:
+      radial-gradient(closest-side, rgb(157 86 102 / 0) 68%, rgb(157 86 102 / 0.55) 80%, rgb(157 86 102 / 0) 94%),
+      radial-gradient(closest-side, #48091c 0%, #5a172b 34%, #702c3e 58%, rgb(128 60 76 / 0.55) 80%, rgb(128 60 76 / 0) 100%);
+    --grano: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
+  @media (min-width: 40rem) { :root { --gutter: 1.5rem; } }
+  @media (min-width: 64rem) { :root { --gutter: 2.5rem; } }
 
-  h1,
-  h2,
-  h3 {
-    font-family: var(--font-titulo);
-    font-weight: 500;
-    letter-spacing: -0.01em;
-  }
+  html { scroll-behavior: smooth; scroll-padding-top: var(--altura-navbar); }
+  body { background-color: var(--color-marfil); color: var(--color-vino); font-family: var(--font-cuerpo); font-size: var(--text-cuerpo); line-height: 1.65; -webkit-font-smoothing: antialiased; }
+  h1, h2, h3 { font-family: var(--font-titulo); font-weight: 400; font-synthesis: none; text-wrap: balance; }
+  ::selection { background-color: var(--color-rosa); color: var(--color-vino); }
+  :focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
 
-  ::selection {
-    background-color: var(--color-rosa);
-    color: var(--color-cacao);
+  /* Reveal (components/ui/Reveal.tsx): estado inicial y final por CSS */
+  [data-reveal] { opacity: 0; transform: translateY(16px); transition: opacity 600ms var(--ease-marca), transform 600ms var(--ease-marca); transition-delay: var(--retraso, 0ms); }
+  [data-reveal][data-visible] { opacity: 1; transform: none; }
+  /* Reveal `inmediato` (above the fold): entrada al cargar, sin JS ni opacity 0 (no retrasa el LCP) */
+  @media (prefers-reduced-motion: no-preference) {
+    [data-entrada] { animation: entrada 600ms var(--ease-marca) both; animation-delay: var(--retraso, 0ms); }
   }
-
-  :focus-visible {
-    outline: 2px solid var(--color-cacao);
-    outline-offset: 3px;
-  }
+  @keyframes entrada { from { transform: translateY(16px); } }
 
   @media (prefers-reduced-motion: reduce) {
-    html {
-      scroll-behavior: auto;
-    }
+    html { scroll-behavior: auto; }
+    [data-reveal] { transform: none; transition-duration: 1ms; transition-delay: 0ms; }
+    *, *::before, *::after { animation-duration: 1ms !important; animation-iteration-count: 1 !important; transition-duration: 1ms !important; }
   }
+}
+
+@utility contenedor { width: 100%; max-width: 80rem; margin-inline: auto; padding-inline: var(--gutter); }
+@utility seccion { padding-block: var(--espacio-seccion); }
+/* Grano: ::before con z-index -1 dentro de un contexto aislado → queda sobre el fondo y bajo el contenido.
+   Sin `position`: el elemento debe estar posicionado (Degradado añade `relative` o el llamador `absolute`). */
+@utility grano {
+  isolation: isolate;
+  &::before { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; opacity: 0.12; mix-blend-mode: overlay; background-image: var(--grano); background-size: 180px; }
 }

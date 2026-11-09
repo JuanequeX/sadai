@@ -1,59 +1,72 @@
 @use "../../styles/tokens" as *;
 
-.collage {
-  position: relative;
-  // Deja aire a la derecha y abajo para la tarjeta flotante
-  padding-right: 2.5rem;
-  padding-bottom: 2.5rem;
+// Tono más oscuro muestreado del Degradado 03 (borde derecho del original). Respaldo mientras
+// carga la imagen, color de fondo bajo ella en móvil y base de los velos: así se funden con la
+// espiral sin cambiar de matiz.
+$sombra-03: #310913;
 
+// Un velo de $sombra-03 al 60 % deja cualquier píxel del Degradado 03 (incluido el rosa más
+// claro, #f7b7c7) por debajo de L = 0,13 → marfil ≥ 5,5:1. Por eso basta un velo moderado que
+// deja ver la espiral, en lugar de tapar el fondo.
+$velo: rgb(49 9 19 / 0.5);
+$velo-0: rgb(49 9 19 / 0);
+
+// Alto del retrato en móvil (columna única, 4:5, tope 28rem) medido desde el borde superior.
+$fin-retrato-movil: calc(var(--espacio-seccion) + min(100vw - 2 * var(--gutter), 28rem) * 1.25);
+
+// `section.` sube la especificidad sobre `.degradado` (background-color vino de respaldo).
+section.sobreMi {
+  background-color: $sombra-03;
+  // Encuadre (lo consume .v03 de Degradado.module.scss).
+  // Móvil, imagen vertical: al menos 40rem de ancho (≈ 71rem de alto) para que la espiral no
+  // quede escondida tras el retrato: rosa arriba, la espiral entre el retrato y el texto y el
+  // vino profundo bajo las tarjetas. 32 % centra el núcleo de la espiral a 360 px.
+  --d03-size: max(100%, 48rem) auto;
+  --d03-pos: 35% 0%;
+
+  // md+: imagen horizontal a `cover`. El retrato queda sobre el rosa de la izquierda y el
+  // núcleo de la espiral, con su anillo, bajo la columna de texto (se ve a través del velo).
+  @include md {
+    --d03-size: cover;
+    --d03-pos: 40% 50%;
+  }
   @include lg {
-    padding-right: 3.5rem;
+    --d03-pos: 0% 50%;
   }
 }
 
-.marco {
-  position: relative;
-  z-index: 2;
-  overflow: hidden;
-  // Forma orgánica, como las tarjetas de la referencia
-  border-radius: 14rem 14rem 1.75rem 1.75rem;
-  box-shadow: 0 24px 60px rgba(62, 39, 35, 0.18);
+// Velo solo donde va el texto. z -2: bajo el grano (::before de .grano, z -1).
+.velo {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  // Móvil: retrato limpio sobre el rosa; desde el título, velo al 60 %.
+  background-image: linear-gradient(
+    to bottom,
+    $velo-0 0,
+    $velo-0 calc(#{$fin-retrato-movil} - 2rem),
+    $velo calc(#{$fin-retrato-movil} + 2rem)
+  );
+
+  // md+: columna de texto a la derecha. El velo es uniforme bajo ella (la espiral conserva su
+  // forma) y se desvanece DETRÁS del retrato, que es opaco: así no se ve un corte vertical.
+  @include md {
+    background-image: linear-gradient(to left, $velo 0%, $velo 50%, $velo-0 80%);
+  }
+  @include lg {
+    background-image: linear-gradient(to left, $velo 0%, $velo 58%, $velo-0 76%);
+  }
 }
 
 .retrato {
-  display: block;
-  width: 100%;
-  height: auto;
-  aspect-ratio: 4 / 5;
-  object-fit: cover;
-  object-position: center 22%;
+  border-radius: $radio-tarjeta;
+  box-shadow: 0 2rem 4rem -1.5rem rgb(49 9 19 / 0.7);
 }
 
-.tarjetaFlotante {
-  position: absolute;
-  z-index: 3;
-  right: 0;
-  bottom: 0;
-  padding: 1.1rem 1.6rem;
-  text-align: center;
-  background-color: $crema;
-  border-radius: 1.5rem 1.5rem 1.5rem 0.35rem;
-  box-shadow: 0 14px 34px rgba(62, 39, 35, 0.14);
-
-  @include md {
-    padding: 1.4rem 2rem;
-  }
-}
-
-// Acuarela detrás del retrato
-.mancha {
-  position: absolute;
-  z-index: 1;
-  top: -1.5rem;
-  left: -1.5rem;
-  width: 65%;
-  height: 55%;
-  background-color: rgba(244, 201, 214, 0.9);
-  border-radius: 58% 42% 47% 53% / 52% 45% 55% 48%;
-  filter: blur(2px);
+// Tarjetas de propuesta: vidrio vino (sin backdrop-filter, caro en móvil). Fondo propio para
+// que el contraste no dependa de qué parte de la espiral les toque.
+.tarjeta {
+  border: 1px solid $linea-clara;
+  background-color: rgb(49 9 19 / 0.62);
 }

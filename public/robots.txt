@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /datos-bancarios
+
+Sitemap: https://sadai.mx/sitemap.xml

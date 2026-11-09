@@ -1,0 +1,60 @@
+@use "../../styles/tokens" as *;
+
+// Sin `position` aquí: este CSS no va en capa y le ganaría a `absolute` de Tailwind.
+// El componente añade `relative` salvo que el llamador ya posicione el elemento.
+.degradado {
+  isolation: isolate;
+  background-color: $vino; // respaldo
+}
+
+.aura { background-image: var(--grad-aura); }
+.v01 { background-image: var(--grad-01); }
+.v02 { background-image: var(--grad-02); }
+.v04 { background-image: var(--grad-04); }
+.v05 { background-image: var(--grad-05); }
+
+// Variante por imagen (`pnpm assets imagenes --con-degradado-03`). Imagen suavizada: el grano lo
+// pone `.grano`. Móvil usa un recorte vertical (girado 90°: rosa arriba, vino abajo) para no
+// bajar 1920 px ni ampliar una franja de 8 % del ancho. El llamador elige el encuadre con
+// `--d03-pos` (y `--d03-size`). La declaración url() previa es el respaldo sin image-set().
+.v03 {
+  background-repeat: no-repeat;
+  background-size: var(--d03-size, cover);
+  background-position: var(--d03-pos, center);
+  background-image: url("/img/degradado-03-vertical-720.webp");
+  background-image: image-set(url("/img/degradado-03-vertical-720.avif") type("image/avif"), url("/img/degradado-03-vertical-720.webp") type("image/webp"));
+
+  @include md {
+    background-image: url("/img/degradado-03-1280.webp");
+    background-image: image-set(url("/img/degradado-03-1280.avif") type("image/avif"), url("/img/degradado-03-1280.webp") type("image/webp"));
+  }
+
+  @include xl {
+    background-image: url("/img/degradado-03-1920.webp");
+    background-image: image-set(url("/img/degradado-03-1920.avif") type("image/avif"), url("/img/degradado-03-1920.webp") type("image/webp"));
+  }
+}
+
+.veloInferior::after,
+.veloSuperior::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.veloInferior::after { background-image: linear-gradient(to top, rgb(68 0 25 / 0.45), transparent); }
+.veloSuperior::after { background-image: linear-gradient(to bottom, rgb(68 0 25 / 0.45), transparent); }
+
+@include con-movimiento {
+  .animado {
+    background-size: 140% 140%;
+    animation: deslizar 24s ease-in-out infinite alternate;
+  }
+}
+
+@keyframes deslizar {
+  from { background-position: 0% 0%; }
+  to { background-position: 100% 100%; }
+}
