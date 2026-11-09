@@ -76,6 +76,31 @@
     --grad-hero-seda: linear-gradient(125deg, #6f2c3e 0%, #833e4f 22%, #8f4959 42%, #8a4455 58%, #742f41 78%, #8a4555 90%, #a25b6b 100%);
     --grad-cta: radial-gradient(ellipse 70% 9rem at 50% 0%, rgb(219 155 168 / 0.85) 0%, rgb(197 133 146 / 0.45) 40%, transparent 100%), linear-gradient(180deg, #a96773 0rem, #7a3146 4rem, #63192c 60%, #440019 100%);
     --grad-cotizacion: radial-gradient(ellipse 60% 70% at 12% 88%, #5e1427 0%, transparent 70%), linear-gradient(135deg, #5e1427 0%, #7c3647 55%, #9d5a68 100%);
+    /* Servicios (Degradado 02 reencuadrado, docs/rebranding/SERVICIOS-DEGRADADO.md). Tonos
+       muestreados del PNG oficial. Capas por zonas con paradas en rem desde el borde superior
+       (encabezado, notas y pestañas: rosa claro, texto vino) y desde el inferior (cotización),
+       así el encuadre no depende del alto de la pestaña activa. El satén vino del 02 vive
+       entre ambas zonas, detrás de la tarjeta marfil. Móvil/tablet: columna única. */
+    --grad-servicios:
+      radial-gradient(ellipse 70% 20rem at 0% 0%, rgb(195 122 138 / 0.75) 0%, rgb(195 122 138 / 0) 100%),
+      radial-gradient(ellipse 80% 24rem at 100% 28rem, rgb(247 180 196 / 0.8) 0%, rgb(247 180 196 / 0) 100%),
+      linear-gradient(to bottom, #eda3b3 0rem, #e59cab 12rem, #dc91a1 26rem, #d48a9a 40rem, #cd8494 53rem, rgb(205 132 148 / 0) 62rem),
+      linear-gradient(to top, #dd92a2 0rem, #d18796 12rem, #c98090 24rem, rgb(201 128 144 / 0) 33rem),
+      linear-gradient(to bottom, #d48a9a 0%, #c98090 50%, #d18796 100%);
+    /* lg+: el 02 en horizontal. Vino a la izquierda (columna de la tarjeta) con un pliegue de
+       satén en arco (--grad-servicios-halo, anclado a la tarjeta en MenuServicios.module.scss);
+       brillo rosa a la derecha (notas) y rosa arriba (encabezado y pestañas) y abajo (cotización). */
+    --grad-servicios-lg:
+      radial-gradient(ellipse 40% 24rem at 0% 0%, rgb(195 122 138 / 0.8) 0%, rgb(195 122 138 / 0) 100%),
+      linear-gradient(to bottom, #f2a8b8 0rem, #e59cab 14rem, #da90a0 26rem, #d18796 32rem, rgb(209 135 150 / 0) 39rem),
+      linear-gradient(to top, #e29aa9 0rem, #d48a9a 16rem, #cd8494 26rem, rgb(205 132 148 / 0) 34rem),
+      radial-gradient(ellipse 40% 45% at 88% 50%, #f7b4c4 0%, rgb(244 171 187 / 0) 100%),
+      linear-gradient(105deg, #c37a8a 0%, #d68c9c 40%, #eda3b3 72%, #f4abbb 88%, #e99dad 100%);
+    /* Satén vino del 02 anclado a la tarjeta de servicios (no a la sección): `closest-side`
+       lo escala con la caja del halo, así conserva su forma con 3 o 7 servicios. */
+    --grad-servicios-halo:
+      radial-gradient(closest-side, rgb(157 86 102 / 0) 68%, rgb(157 86 102 / 0.55) 80%, rgb(157 86 102 / 0) 94%),
+      radial-gradient(closest-side, #48091c 0%, #5a172b 34%, #702c3e 58%, rgb(128 60 76 / 0.55) 80%, rgb(128 60 76 / 0) 100%);
     --grano: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
   @media (min-width: 40rem) { :root { --gutter: 1.5rem; } }

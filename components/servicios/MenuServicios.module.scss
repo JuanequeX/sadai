@@ -15,6 +15,26 @@
   }
 }
 
+// Satén vino detrás de la tarjeta de servicios (Degradado 02). Vive en la caja de los paneles,
+// así su alto sigue al de la categoría activa: con 3 servicios no queda un borrón aplastado.
+// z-index -2: debajo del grano de la sección (-1) y encima de su fondo (contexto `isolate`).
+// No sube hasta las pestañas (texto vino) ni entra en la columna de notas.
+.halo {
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    z-index: -2;
+    top: 1.5rem;
+    bottom: -4.5rem;
+    left: -40vw;
+    right: 6%;
+    pointer-events: none;
+    background-image: var(--grad-servicios-halo);
+  }
+}
+
 @keyframes entrar {
   from {
     opacity: 0;

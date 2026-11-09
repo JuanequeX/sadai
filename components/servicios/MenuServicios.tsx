@@ -89,7 +89,7 @@ export default function MenuServicios({ categorias, notas }: MenuServiciosProps)
           })}
         </div>
 
-        <div className="mt-6">
+        <div className={`${styles.halo} mt-6`}>
           {categorias.map((c) => (
             <div
               key={c.id}
@@ -101,7 +101,7 @@ export default function MenuServicios({ categorias, notas }: MenuServiciosProps)
               className={styles.panel}
             >
               <h3 className="sr-only">{c.nombre}</h3>
-              <div className="rounded-tarjeta border border-linea bg-marfil px-4 py-2 sm:px-6 sm:py-3">
+              <div className="rounded-tarjeta border border-vino bg-marfil px-4 py-2 sm:px-6 sm:py-3">
                 <ul>
                   {c.servicios.map((s) => (
                     <FilaServicio key={s.id} servicio={s} categoria={c} />

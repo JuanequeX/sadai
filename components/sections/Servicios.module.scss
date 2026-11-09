@@ -1,0 +1,14 @@
+@use "../../styles/tokens" as *;
+
+// Fondo de Servicios: Degradado 02 reencuadrado por zonas (tokens --grad-servicios* en
+// globals.css; decisión y contrastes en docs/rebranding/SERVICIOS-DEGRADADO.md).
+// `section.` sube la especificidad sobre `.degradado`/`.v02` de Degradado.module.scss.
+section.servicios {
+  // Respaldo: rosa medio del 02 (texto vino ≥ 5:1 aunque no pinten los degradados).
+  background-color: #d18796;
+  background-image: var(--grad-servicios);
+
+  @include lg {
+    background-image: var(--grad-servicios-lg);
+  }
+}
