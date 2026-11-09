@@ -218,3 +218,91 @@ Base: `/private/tmp/claude-501/-Users-juanequex-codebase-sumus-sadai/6ce9faa1-4d
   - `shots/v3/` (recortes revisados y menú móvil)
   - `shots/final/` (barrido completo final, más `sinjs-390.png`)
 - Herramientas: `tools/` (`serve.mjs` imita GitHub Pages; `lh.sh`, `capturas.cjs`, `func.cjs`, `mapas.mjs` hace el desglose de chunks por source map).
+
+## Medición 2 (babfdbe)
+
+- **Fecha:** 2026-11-08 · **Commit:** `babfdbe` (rama `rebranding-total`). Solo se midió: no se tocó código.
+- **Cómo:** mismo método que arriba.
+  - Copia en el scratchpad, `pnpm build` (webpack) y `out/` servido como GitHub Pages (gzip, `max-age=600`).
+  - Lighthouse 12.8.2 con Chrome 156.
+  - **3 corridas por caso; se reporta la mediana.** Entre paréntesis, las tres corridas de Performance.
+
+### Puntajes (mediana de 3)
+
+| Página | Disp. | Perf | A11y | BP | SEO | FCP | LCP | TBT | CLS | SI |
+|---|---|---|---|---|---|---|---|---|---|---|
+| `/` | móvil | 98 (97/98/98) | 100 | 100 | 100 | 0.9 s | 2.4 s | 18 ms | 0 | 0.9 s |
+| `/` | desktop | 100 | 100 | 100 | 100 | 0.3 s | 0.5 s | 0 ms | 0 | 0.3 s |
+| `/como-llegar` (nueva) | móvil | 99 (98/99/99) | 100 | 100 | 100 | 0.8 s | 2.1 s | 17 ms | 0 | 0.8 s |
+| `/como-llegar` (nueva) | desktop | 100 | 100 | 100 | 100 | 0.2 s | 0.5 s | 0 ms | 0 | 0.2 s |
+| `/datos-bancarios` | móvil | 99 (98/99/99) | 100 | 100 | 63 ¹ | 0.9 s | 2.2 s | 9 ms | 0 | 0.9 s |
+| `/datos-bancarios` | desktop | 100 | 100 | 100 | 63 ¹ | 0.2 s | 0.5 s | 0 ms | 0 | 0.2 s |
+| `/404` (`/404.html`) | móvil | 99 (99/99/99) | 100 | 100 | 63 ¹ | 0.9 s | 2.3 s | 18 ms | 0 | 0.9 s |
+| `/404` (`/404.html`) | desktop | 100 | 100 | 100 | 63 ¹ | 0.2 s | 0.5 s | 0 ms | 0 | 0.2 s |
+
+¹ Solo falla `is-crawlable`, por el `noindex` intencional. Es igual que en la medición 1.
+
+**Comparación con la medición 1:** no hay regresiones de puntaje en ninguna página ni dispositivo. Las diferencias de métricas están dentro del ruido (±0.1 s; TBT +8–18 ms en móvil). Las auditorías que fallan son las mismas que antes:
+
+- caché de GitHub Pages;
+- `legacy-javascript` y `unused-javascript` de Next;
+- `image-delivery-insight` del retrato;
+- `is-crawlable` en las dos páginas con `noindex`.
+
+### Peso transferido (móvil, corrida 2)
+
+| Página | JS | HTML | CSS | Fuentes | Imágenes | Total | Peticiones | Terceros |
+|---|---|---|---|---|---|---|---|---|
+| `/` | 118.6 KB (+0.4) | 11.2 KB (+0.3) | 10.9 | 43.2 | 33.6 | 239 KB | 25 | 0 |
+| `/como-llegar` | 113.3 KB | 6.2 KB | 9.1 | 43.2 | 0 | 202 KB | 21 | 0 |
+| `/datos-bancarios` | 112.1 KB | 4.6 KB | 10.1 | 43.2 | 1.6 | 198 KB | 21 | 0 |
+| `/404` | 111.2 KB | 4.2 KB | 10.0 | 43.2 | 0 | 202 KB | 24 | 0 |
+
+### Hallazgos por tema
+
+- **iframe de Google Maps (Ubicación)**
+  - Con `loading="lazy"` y fuera del primer pantallazo, Lighthouse **no lo carga**: 0 peticiones a terceros, así que el BP de 100 en la home se mide sin el mapa.
+  - Prueba forzando `loading="eager"` (en una copia de `out/`, no en el repo):
+    - sigue en **BP 100**: no aparecen `third-party-cookies`, `inspector-issues` ni errores de consola en Chrome 156;
+    - Perf: 98 en móvil y 100 en desktop;
+    - pero el mapa trae **17 peticiones y unos 470–510 KB** de Google;
+    - en desktop, `max-potential-fid` sube a 160 ms y `forced-reflow-insight` a 120 ms.
+  - Los usuarios reales que bajan hasta Ubicación pagan ese peso. Además, se pierde el "0 peticiones a terceros" de la fase 3 y Google ya recibe la visita al hacer scroll.
+  - En navegadores que no bloquean cookies de terceros, el embed puede poner cookies de Google. Esto no se ve en la puntuación del Chrome actual.
+- **Hero "seda" con texto marfil**
+  - **LCP:** sigue siendo el h1 ("Tus uñas. Tu forma de decirlo."), con 2.4 s en móvil. El 82 % es render delay del JS simulado; no es una regresión.
+  - **CLS:** 0.
+  - **Contraste medido en píxeles reales** (texto oculto, fondo capturado bajo cada caja, con reduced-motion):
+
+    | Texto | Mínimo | Viewports |
+    |---|---|---|
+    | h1 | ≥ 5.55:1 | 320–1920 y 740×360 |
+    | lead | ≥ 5.55:1 | 320–1920 (en 740×360 queda fuera del viewport) |
+    | "Ver servicios" | ≥ 8.37:1 | 320–1920 (en 740×360 queda fuera del viewport) |
+
+    Todo pasa AA. Hay menos margen que con el h1 vino de la fase 3 (≥ 7.1:1), pero es suficiente.
+- **Croquis inline de `/como-llegar`**
+  - El SVG mayor pesa ~5.3 KB sin comprimir. El HTML de la página es de 26.8 KB (6.1 KB gz) y el chunk de la página de 11 KB (4.0 KB gz).
+  - Impacto despreciable. El LCP de esa página es el texto del paso 1 (2.1 s en móvil).
+  - El chequeo automático marca trazos del croquis "fuera del viewport" en 320–390 px. Es un falso positivo: es geometría recortada por el viewBox, y la captura a 320 se ve completa, sin scroll horizontal.
+- **Responsive y targets.** Barrido de las 4 páginas en 320, 360, 390, 414, 768, 1024, 1280, 1440 y 1920 px, más 740×360, 844×390 y 640×400:
+  - sin scroll horizontal en ningún caso;
+  - ningún target interactivo < 24 px, salvo el skip link oculto.
+
+  La captura de `/datos-bancarios` en 740×360 falló por timeout del screenshot (incidencia de la herramienta, no de la página); el resto del barrido de esa página está limpio.
+- **Navbar de 72 px, ® en la S, horarios y JSON-LD.** Ninguna auditoría nueva falla. SEO es de 100 en `/` y en `/como-llegar`.
+
+### Correcciones propuestas (priorizadas, sin aplicar)
+
+1. **Volver a una fachada para el mapa de Ubicación**, o cargar el iframe solo tras una interacción o cuando el usuario esté por llegar a la sección.
+   - Ahorra unos 500 KB y 17 peticiones de terceros a quien baje hasta Ubicación, y evita mandar la visita y cookies a Google sin consentimiento.
+   - El enlace "Abrir en Google Maps" y `/como-llegar` ya cubren la necesidad.
+   - Si se mantiene el iframe directo, al menos documentarlo como decisión de privacidad.
+2. **Revisar el texto pequeño del croquis** ("Plaza Don Pedro" y nombres de calles, unos 10–11 px a 320). Axe no evalúa texto dentro de SVG. Subirlo a ≥ 12 px o confiar en la lista de pasos, que ya repite la información.
+3. **Margen de contraste del hero.** 5.55:1 pasa AA. Si la "seda" se ajusta más adelante, volver a medir sobre píxeles: el texto marfil tiene poco margen en la zona clara.
+4. Lo de la medición 1 sigue vigente:
+   - `noindex` opcional en la 404 para el 100 de laboratorio;
+   - caché inmutable solo con un CDN delante;
+   - App Router si se quiere bajar del piso de JS del framework.
+
+Evidencia: `/private/tmp/claude-501/-Users-juanequex-codebase-sumus-sadai/6ce9faa1-4d11-4938-b973-052e4c5662c5/scratchpad/lh/reports/medicion2/` tiene las 48 corridas en JSON/HTML más `exp-mapa-eager-{mobile,desktop}.json`. Las capturas están en `…/scratchpad/lh/shots/m2/`.
