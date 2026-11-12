@@ -20,7 +20,8 @@ export default function Servicios() {
       grano
       id="servicios"
       aria-labelledby="servicios-titulo"
-      className={`${styles.servicios} seccion overflow-hidden`}
+      // overflow-clip y no hidden: recorta el halo igual, pero no crea contenedor de scroll y deja funcionar el sticky de las notas.
+      className={`${styles.servicios} seccion overflow-clip`}
     >
       <Reveal className="contenedor flex flex-col items-center text-center">
         <Pill>Servicios</Pill>

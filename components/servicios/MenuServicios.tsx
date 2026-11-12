@@ -49,7 +49,8 @@ export default function MenuServicios({ categorias, notas }: MenuServiciosProps)
   return (
     <div className="contenedor grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-start">
       {/* Notas primero en el DOM: en móvil quedan arriba y se leen antes que las pestañas. */}
-      <div className="mx-auto w-full max-w-[40rem] lg:order-last lg:col-span-4 lg:max-w-none">
+      {/* lg:self-stretch: la columna mide lo mismo que el menú y deja recorrido al sticky de NotasMenu (con items-start medía lo que las notas y el sticky no se movía). */}
+      <div className="mx-auto w-full max-w-[40rem] lg:order-last lg:col-span-4 lg:max-w-none lg:self-stretch">
         <NotasMenu notas={notas} />
       </div>
 
